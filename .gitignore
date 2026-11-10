@@ -1,0 +1,9 @@
+# local server artefacts
+_probe.html
+_vid.html
+*.log
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

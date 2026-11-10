@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="meta.indexT">Acasara — îți cumpărăm locuința direct</title>
+<meta name="description" content="Cumpărăm apartamente și case direct de la proprietari. Ofertă scrisă în 48 de ore, 0 lei comision.">
+<meta name="theme-color" content="#3F71FF">
+<link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=1794320225">
+<!--
+  Acasara. Brand copy, phone, e-mail, address and company data are placeholders:
+  search for "[" and "07XX". Translations live in assets/i18n.js (10 locales).
+  Fonts are loaded from a third-party CDN for this mockup and are NOT licensed to us -
+  see README.md before going live.
+-->
+</head>
+<body>
+<a class="skip" href="#top">Sari la conținut</a>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-mark">
+    <span class="wordmark">acasara<span class="tld">.ro</span></span>
+  </div>
+  <div class="loader-bar"><i></i></div>
+</div>
+
+<nav class="navbar">
+  <a class="brand" href="#top" aria-label="acasara.ro">
+    <span class="wordmark">acasara<span class="tld">.ro</span></span>
+  </a>
+  <div class="nav-links">
+    
+<a href="#miert" data-i18n="nav.why">De ce noi</a>    <a href="#cum" data-i18n="nav.how">Cum funcționează</a>    <a href="#cumparam" data-i18n="nav.what">Ce cumpărăm</a>    <a href="#gyik" data-i18n="nav.faq">Întrebări</a>
+  </div>
+  <div class="nav-end">
+    <div class="lang" data-open="false">
+      <button class="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Language">
+        <span class="lang-cur">RO</span><svg viewBox="0 0 11 7" fill="none" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lang-menu" role="menu"></div>
+    </div>
+    <a class="btn" href="#cerere" aria-label="Cere oferta" data-i18n="nav.offer" data-i18n-attr="aria-label"><span data-i18n="nav.offer">Cere oferta</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-media" id="heroMedia"
+         data-clips="assets/video/hero-sanpetru.mp4,assets/video/r-14864002.mp4,assets/video/village.mp4,assets/video/r-14665250.mp4,assets/video/r-18070174.mp4,assets/video/city.mp4">
+      <video class="hero-vid is-on" autoplay muted playsinline preload="auto"
+             poster="assets/img/balconies.jpg" src="assets/video/hero-sanpetru.mp4"></video>
+      <video class="hero-vid" muted playsinline preload="auto"></video>
+    </div>
+    <div class="hero-in">
+      <div>
+        <h1><span data-i18n="hero.t1">Vinde casa.</span><br><span data-i18n="hero.t2">Păstrează ritmul.</span></h1>
+        <p data-i18n="hero.sub">Fără comision, fără renovări, fără zeci de vizionări. O ofertă scrisă în 48 de ore și cheile predate atunci când ești tu pregătit.</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn" href="#cerere"><span data-i18n="hero.cta">Cere oferta</span><span class="btn-circle"><svg viewBox="0 0 12 14" fill="none" aria-hidden="true"><path d="M2 1.6 11 7l-9 5.4V1.6Z" fill="currentColor"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <ul class="proof-list">
+      <li><b>01</b><span data-i18n="proof.p1">Contact direct</span></li>
+      <li><b>02</b><span data-i18n="proof.p2">Vanzare fara comision</span></li>
+      <li><b>03</b><span data-i18n="proof.p3">Discretie totala</span></li>
+      <li><b>04</b><span data-i18n="proof.p4">Data de mutare flexibila</span></li>
+    </ul>
+  </section>
+
+
+  <section class="calc" id="calculator">
+    <div class="calc-head rv">
+      <p class="kicker" data-i18n="cash.badge">Plata cash</p>
+      <h2 data-i18n="calc.h2">Calculator de oferta</h2>
+      <p class="calc-lead" data-i18n="calc.lead">Patru date si vezi pe loc un interval orientativ.</p>
+    </div>
+
+    <form class="calc-card rv" id="calcForm" novalidate>
+      <div class="calc-grid">
+        <div class="field">
+          <label for="ccity" data-i18n="calc.city">Oras</label>
+          <input class="input" id="ccity" name="ccity" type="text" autocomplete="address-level2">
+        </div>
+        <div class="field">
+          <label for="csize" data-i18n="calc.size">Suprafata (m2)</label>
+          <input class="input" id="csize" name="csize" type="number" min="12" max="600" value="58" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="crooms" data-i18n="calc.rooms">Camere</label>
+          <select class="select" id="crooms" name="crooms">
+            <option value="1">1</option><option value="2" selected>2</option>
+            <option value="3">3</option><option value="4">4</option><option value="5">5+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="cyear" data-i18n="calc.year">Anul constructiei</label>
+          <input class="input" id="cyear" name="cyear" type="number" min="1900" max="2026" value="1985" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="ccond" data-i18n="calc.cond">Starea</label>
+          <select class="select" id="ccond" name="ccond">
+            <option value="new" data-i18n="f.cond1">Noua</option>
+            <option value="renovated" data-i18n="f.cond2">Renovata</option>
+            <option value="liveable" data-i18n="f.cond3">Locuibila</option>
+            <option value="torenovate" data-i18n="f.cond4">De renovat</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-label" data-i18n="calc.type">Tipul imobilului</span>
+        <div class="pills" role="radiogroup">
+            <label class="pill"><input type="radio" name="ctype" value="brick" checked><span data-i18n="calc.t1">Apartament caramida</span></label>
+            <label class="pill"><input type="radio" name="ctype" value="panel"><span data-i18n="calc.t2">Apartament panouri</span></label>
+            <label class="pill"><input type="radio" name="ctype" value="house"><span data-i18n="calc.t3">Casa</span></label>
+            <label class="pill"><input type="radio" name="ctype" value="studio"><span data-i18n="calc.t4">Garsoniera</span></label>
+        </div>
+      </div>
+
+      <div class="calc-foot">
+        <button class="btn" type="submit"><span data-i18n="calc.go">Calculeaza</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <div class="calc-out" id="calcOut" aria-live="polite">
+          <p class="calc-out-label" data-i18n="calc.res">Interval orientativ</p>
+          <strong id="calcVal">-</strong>
+        </div>
+      </div>
+      <p class="calc-note" data-i18n="calc.note">Estimare automata, nu o evaluare.</p>
+    </form>
+  </section>
+
+
+  <section class="reasons" id="miert">
+    <div class="reasons-head rv">
+      <h2 data-i18n="reasons.h2">5 motive pentru care proprietarii aleg o oferta cash</h2>
+    </div>
+    <ul class="reasons-list">
+      <li class="reason rv"><span class="reason-n">01</span><p data-i18n="reasons.r1">Nu platesti comision de agentie</p></li>
+      <li class="reason rv"><span class="reason-n">02</span><p data-i18n="reasons.r2">Nu renovezi si nu faci zeci de vizionari</p></li>
+      <li class="reason rv"><span class="reason-n">03</span><p data-i18n="reasons.r3">Stii pretul in 48 de ore, in scris</p></li>
+      <li class="reason rv"><span class="reason-n">04</span><p data-i18n="reasons.r4">Banii intra in ziua semnarii la notar</p></li>
+      <li class="reason rv"><span class="reason-n">05</span><p data-i18n="reasons.r5">Te muti cand esti pregatit, pana la 90 de zile</p></li>
+    </ul>
+  </section>
+
+
+  <section class="walk" id="cum">
+    <div class="walk-head rv">
+      <p class="kicker" data-i18n="proc.kicker">Drumul vânzării</p>
+      <h2 data-i18n="how.h1">De la primul mesaj la notar, în cel mult 14 zile</h2>
+      <p class="walk-lead" data-i18n="how.lead">Știi dinainte fiecare pas. Decizi abia după ce ai oferta scrisă în mână.</p>
+    </div>
+    <ol class="walk-list">
+        <li class="walk-step rv">
+          <span class="walk-num">01</span>
+          <div class="walk-body">
+            <h3 data-i18n="how.s1">Ne spui adresa</h3>
+            <p data-i18n="how.b1">Online, la telefon sau pe WhatsApp, în câteva minute.</p>
+          </div>
+        </li>
+        <li class="walk-step rv">
+          <span class="walk-num">02</span>
+          <div class="walk-body">
+            <h3 data-i18n="how.s2">Te sunăm</h3>
+            <p data-i18n="how.b2">Clarificăm situația și verificăm extrasul de carte funciară.</p>
+          </div>
+        </li>
+        <li class="walk-step rv">
+          <span class="walk-num">03</span>
+          <div class="walk-body">
+            <h3 data-i18n="how.s3">O singură vizionare</h3>
+            <p data-i18n="how.b3">Durează 30–45 de minute, fără obligații.</p>
+          </div>
+        </li>
+        <li class="walk-step rv">
+          <span class="walk-num">04</span>
+          <div class="walk-body">
+            <h3 data-i18n="how.s4">Oferta scrisă</h3>
+            <p data-i18n="how.b4">Cu prețul, calculul și termenele, valabilă 30 de zile.</p>
+          </div>
+        </li>
+        <li class="walk-step rv">
+          <span class="walk-num">05</span>
+          <div class="walk-body">
+            <h3 data-i18n="how.s5">Semnare la notar</h3>
+            <p data-i18n="how.b5">Onorariul notarului și intabularea le plătim noi.</p>
+          </div>
+        </li>
+        <li class="walk-step rv">
+          <span class="walk-num">06</span>
+          <div class="walk-body">
+            <h3 data-i18n="how.s6">Predai cheile</h3>
+            <p data-i18n="how.b6">Rămâi în locuință până la 90 de zile, dacă ai nevoie.</p>
+          </div>
+        </li>
+    </ol>
+  </section>
+
+
+  <section class="scatter" id="cumparam">
+    <div class="scatter-head rv">
+      <h2 data-i18n="buy.h2">Cumpărăm exact ce ai tu de vândut</h2>
+      <p data-i18n="buy.sub">Apartament, casă, garsonieră, moștenire sau un imobil pe care nu ai apucat să-l renovezi. Îl luăm în starea în care este.</p>
+    </div>
+    <div class="scatter-stage">
+      <figure class="sct sct-1 rv">
+        <img src="assets/img/balconies.jpg" alt="Bloc de apartamente cu balcoane" loading="lazy">
+        <figcaption class="sct-label lbl-r"><svg viewBox="0 0 60 26" fill="none" aria-hidden="true"><path d="M2 20c10 4 18-6 10-10-5-2-7 4-2 6 9 4 24 1 46-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M50 3l6 4-6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><i data-i18n="buy.l1">Apartamente</i></figcaption>
+      </figure>
+      <figure class="sct sct-2 rv">
+        <img src="assets/img/keys.jpg" alt="Predarea cheilor unei locuințe" loading="lazy">
+        <figcaption class="sct-label lbl-b"><svg viewBox="0 0 60 26" fill="none" aria-hidden="true"><path d="M2 20c10 4 18-6 10-10-5-2-7 4-2 6 9 4 24 1 46-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M50 3l6 4-6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><i data-i18n="buy.l2">Cheile</i></figcaption>
+      </figure>
+      <figure class="sct sct-3 rv">
+        <img src="assets/img/block.jpg" alt="Bloc rezidențial pe cer senin" loading="lazy">
+        <figcaption class="sct-label lbl-l"><svg viewBox="0 0 60 26" fill="none" aria-hidden="true"><path d="M2 20c10 4 18-6 10-10-5-2-7 4-2 6 9 4 24 1 46-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M50 3l6 4-6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><i data-i18n="buy.l3">Garsoniere</i></figcaption>
+      </figure>
+      <figure class="sct sct-4 rv">
+        <img src="assets/img/signing.jpg" alt="Semnarea documentelor cu un consultant" loading="lazy">
+        <figcaption class="sct-label lbl-l"><svg viewBox="0 0 60 26" fill="none" aria-hidden="true"><path d="M2 20c10 4 18-6 10-10-5-2-7 4-2 6 9 4 24 1 46-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M50 3l6 4-6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><i data-i18n="buy.l4">La notar</i></figcaption>
+      </figure>
+      <figure class="sct sct-5 rv">
+        <img src="assets/img/boxes.jpg" alt="Cuplu care cară cutii la mutare" loading="lazy">
+        <figcaption class="sct-label lbl-r"><svg viewBox="0 0 60 26" fill="none" aria-hidden="true"><path d="M2 20c10 4 18-6 10-10-5-2-7 4-2 6 9 4 24 1 46-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M50 3l6 4-6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><i data-i18n="buy.l5">Mutare fără grabă</i></figcaption>
+      </figure>
+      <figure class="sct sct-6 rv">
+        <img src="assets/img/for-sale.jpg" alt="Semn de vânzare ținut în mână" loading="lazy">
+        <figcaption class="sct-label lbl-b"><svg viewBox="0 0 60 26" fill="none" aria-hidden="true"><path d="M2 20c10 4 18-6 10-10-5-2-7 4-2 6 9 4 24 1 46-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M50 3l6 4-6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><i data-i18n="buy.l6">Vânzare rapidă</i></figcaption>
+      </figure>
+    </div>
+    <div class="scatter-cta rv">
+      <a class="btn" href="#proces"><span data-i18n="buy.cta">Vezi ce cumpărăm</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+  </section>
+
+
+  <section class="section-what">
+    <header class="pagehead rv">
+      <h2 data-i18n="what.h1">Ce cumpărăm și ce nu</h2>
+      <p data-i18n="what.lead">Suntem direcți: dacă nu se potrivește, îți spunem din prima, nu după trei săptămâni.</p>
+    </header>
+    <div class="twocol">
+      <div class="panel panel-yes rv">
+        <h3 data-i18n="what.yes">Cumpărăm</h3>
+        <ul>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="what.y1">Apartamente și garsoniere în bloc</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="what.y2">Case și vile cu teren</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="what.y3">Imobile nerenovate sau cu chiriaș</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="what.y4">Moșteniri cu acte în regulă</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="what.y5">Imobile cu ipotecă de stins</span></li>
+        </ul>
+      </div>
+      <div class="panel panel-no rv">
+        <h3 data-i18n="what.no">Nu cumpărăm</h3>
+        <ul>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M6 6l10 10M16 6 6 16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span data-i18n="what.n1">Imobile fără carte funciară</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M6 6l10 10M16 6 6 16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span data-i18n="what.n2">Construcții fără autorizație</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M6 6l10 10M16 6 6 16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span data-i18n="what.n3">Imobile în litigiu</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="cash" id="cash">
+    <div class="cash-in">
+      <p class="cash-badge rv" data-i18n="cash.badge">Plată cash</p>
+      <h2 class="rv" data-i18n="cash.h2">Cumpărăm cu banii noștri, nu cu creditul băncii</h2>
+      <p class="cash-lead rv" data-i18n="cash.lead">Nu depindem de aprobarea unei bănci, așa că nu există clauză suspensivă și nu există vânzare care pică în ultima zi.</p>
+      <ul class="cash-points rv">
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cash.p1">Fonduri proprii, verificabile</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cash.p2">Fără credit, fără condiție suspensivă</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cash.p3">Banii intră prin transfer în ziua semnării</span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="cash.p4">Preluăm și imobilele cu ipotecă de stins</span></li>
+      </ul>
+      <div class="cash-foot rv">
+        <a class="btn btn-light" href="#cerere"><span data-i18n="cta.btn">Cere oferta</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <p class="cash-note" data-i18n="cash.note">Plata se face prin transfer bancar, la notar. Nu lucrăm cu numerar fizic.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="faq" id="gyik">
+    <div class="faq-head rv">
+      <h2 data-i18n="faq.h2">Bine de stiut dinainte</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item rv"><summary><span data-i18n="faq.q1">Cum functioneaza vanzarea directa?</span></summary><p data-i18n="faq.a1">Ne spui adresa, venim la o singura vizionare si primesti oferta scrisa in 48 de ore.</p></details>
+      <details class="faq-item rv"><summary><span data-i18n="faq.q2">Trebuie sa platesc comision de agentie?</span></summary><p data-i18n="faq.a2">Nu. Cumparam direct de la tine.</p></details>
+      <details class="faq-item rv"><summary><span data-i18n="faq.q3">Pot vinde un imobil care are nevoie de renovare?</span></summary><p data-i18n="faq.a3">Da. Cumparam in starea actuala.</p></details>
+      <details class="faq-item rv"><summary><span data-i18n="faq.q4">Cat de repede primesc banii?</span></summary><p data-i18n="faq.a4">Semnam la notar in 7-14 zile, iar suma intra in aceeasi zi.</p></details>
+      <details class="faq-item rv"><summary><span data-i18n="faq.q5">Trebuie sa ma mut imediat dupa vanzare?</span></summary><p data-i18n="faq.a5">Nu. Poti ramane pana la 90 de zile.</p></details>
+      <details class="faq-item rv"><summary><span data-i18n="faq.q6">Sunt obligat sa accept oferta?</span></summary><p data-i18n="faq.a6">Nu. Oferta este valabila 30 de zile.</p></details>
+    </div>
+  </section>
+
+
+  <section class="wizard" id="cerere">
+    <div class="wizard-head rv">
+      <h2 data-i18n="f.heading">Spune-ne despre locuință</h2>
+      <p data-i18n="f.lead">Patru pași scurți. Te sunăm înapoi în 24 de ore.</p>
+    </div>
+
+    <div class="wiz-split rv">
+      <aside class="wiz-side">
+        <h3 data-i18n="cash.h2">Cumpărăm cu banii noștri, nu cu creditul băncii</h3>
+        <p data-i18n="hero.sub">Fără comision, fără renovări, fără zeci de vizionări. O ofertă scrisă în 48 de ore și cheile predate atunci când ești tu pregătit.</p>
+        <figure class="wiz-key">
+          <img src="assets/img/key.png" alt="" width="620" height="230" loading="lazy">
+        </figure>
+        <ul class="wiz-trust">
+          <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="offer.p1">0 lei comision</span></li>
+          <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="proc.b3">Banii intră prin transfer bancar în aceeași zi.</span></li>
+          <li><svg viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11.5 9 16.5 18 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="offer.p3">Fără obligații</span></li>
+        </ul>
+      </aside>
+
+    <form class="wiz-card" id="enquiry" novalidate>
+      <ol class="wiz-steps" id="wizRail">
+        <li><b>1</b><span data-i18n="f.s1">Cine ești</span></li>
+        <li><b>2</b><span data-i18n="f.s2">Locuința</span></li>
+        <li><b>3</b><span data-i18n="f.s3">Preț și anunț</span></li>
+        <li><b>4</b><span data-i18n="f.s4">Date de contact</span></li>
+      </ol>
+      <div class="wiz-bar"><i id="wizBar"></i></div>
+      <p class="wiz-count" id="wizCount">Pasul 1 din 4</p>
+
+
+      <fieldset class="wiz-pane" data-pane="1">
+        <legend data-i18n="f.s1">Cine ești</legend>
+        <div class="field">
+          <span class="field-label" data-i18n="f.role">Ești…</span>
+          <div class="pills" role="radiogroup">
+            <label class="pill"><input type="radio" name="role" value="private" checked>
+              <span data-i18n="f.rolePrivate">Persoană fizică</span></label>
+            <label class="pill"><input type="radio" name="role" value="agent">
+              <span data-i18n="f.roleAgent">Agent imobiliar</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ptype" data-i18n="offer.type">Tipul locuinței</label>
+          <select class="select" id="ptype" name="ptype">
+            <option value="apartament" data-i18n="offer.t1">Apartament</option>
+            <option value="casa" data-i18n="offer.t2">Casă</option>
+            <option value="garsoniera" data-i18n="offer.t3">Garsonieră</option>
+            <option value="teren" data-i18n="offer.t4">Teren</option>
+            <option value="altceva" data-i18n="offer.t5">Altceva</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset class="wiz-pane is-hidden" data-pane="2">
+        <legend data-i18n="f.s2">Locuința</legend>
+        <div class="field">
+          <label for="paddress"><span data-i18n="f.address">Adresa exactă a locuinței</span><abbr class="req" title="obligatoriu">*</abbr></label>
+          <input class="input" id="paddress" name="paddress" type="text" autocomplete="street-address">
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label for="psize" data-i18n="f.size">Suprafața (m²)</label>
+            <input class="input" id="psize" name="psize" type="number" min="1" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="pplot" data-i18n="f.plot">Suprafața terenului (m², dacă există)</label>
+            <input class="input" id="pplot" name="pplot" type="number" min="1" inputmode="numeric">
+          </div>
+        </div>
+        <div class="field">
+          <label for="pcond" data-i18n="f.condition">Starea locuinței</label>
+          <select class="select" id="pcond" name="pcond">
+            <option value="" data-i18n="f.selectPlease">Alege…</option>
+            <option value="new" data-i18n="f.cond1">Nouă</option>
+            <option value="renovated" data-i18n="f.cond2">Renovată</option>
+            <option value="liveable" data-i18n="f.cond3">Locuibilă</option>
+            <option value="torenovate" data-i18n="f.cond4">De renovat</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset class="wiz-pane is-hidden" data-pane="3">
+        <legend data-i18n="f.s3">Preț și anunț</legend>
+        <div class="field">
+          <label for="padv" data-i18n="f.advertised">Locuința este deja listată?</label>
+          <select class="select" id="padv" name="padv">
+            <option value="" data-i18n="f.selectPlease">Alege…</option>
+            <option value="yes" data-i18n="f.advYes">Da</option>
+            <option value="no" data-i18n="f.advNo">Nu</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="plisting" data-i18n="f.listing">Link către anunț (opțional)</label>
+          <input class="input" id="plisting" name="plisting" type="url" placeholder="https://">
+        </div>
+        <div class="field">
+          <label for="pprice" data-i18n="f.price">Ai o idee despre preț?</label>
+          <input class="input" id="pprice" name="pprice" type="text"
+                 data-i18n="f.pricePh" data-i18n-attr="placeholder" placeholder="ex. 95.000 EUR">
+        </div>
+      </fieldset>
+
+      <fieldset class="wiz-pane is-hidden" data-pane="4">
+        <legend data-i18n="f.s4">Date de contact</legend>
+        <div class="row-2">
+          <div class="field">
+            <label for="plast"><span data-i18n="f.lastName">Nume</span><abbr class="req" title="obligatoriu">*</abbr></label>
+            <input class="input" id="plast" name="plast" type="text" autocomplete="family-name">
+          </div>
+          <div class="field">
+            <label for="pfirst"><span data-i18n="f.firstName">Prenume</span><abbr class="req" title="obligatoriu">*</abbr></label>
+            <input class="input" id="pfirst" name="pfirst" type="text" autocomplete="given-name">
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field">
+            <label for="pemail"><span data-i18n="f.email">Adresă de e-mail</span><abbr class="req" title="obligatoriu">*</abbr></label>
+            <input class="input" id="pemail" name="pemail" type="email" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="pphone"><span data-i18n="f.phone">Telefon</span><abbr class="req" title="obligatoriu">*</abbr></label>
+            <input class="input" id="pphone" name="pphone" type="tel" autocomplete="tel">
+          </div>
+        </div>
+        <div class="field">
+          <label for="pmsg" data-i18n="f.message">Altceva important</label>
+          <textarea class="input textarea" id="pmsg" name="pmsg" rows="4"
+                    data-i18n="f.messagePh" data-i18n-attr="placeholder"
+                    placeholder="Scrie-ne orice crezi că ne ajută să înțelegem situația ta."></textarea>
+        </div>
+        <label class="consent">
+          <input type="checkbox" id="pconsent" name="pconsent">
+          <span><span data-i18n="f.consent">Am citit și accept nota de confidențialitate.</span><abbr class="req" title="obligatoriu">*</abbr></span>
+        </label>
+      </fieldset>
+
+      <div class="wiz-nav">
+        <button class="btn btn-quiet is-hidden" type="button" id="wizBack" data-i18n="f.back">Înapoi</button>
+        <button class="btn" type="button" id="wizNext">
+          <span data-i18n="f.next">Mai departe</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="btn is-hidden" type="submit" id="wizSend">
+          <span data-i18n="f.submit">Cere să fii sunat</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+
+      <p class="wiz-note" data-i18n="f.required">Câmpurile marcate cu asterisc sunt obligatorii. Folosim datele doar pentru a răspunde solicitării tale.</p>
+      <p class="form-msg" id="wizMsg" role="status" aria-live="polite"></p>
+    </form>
+    </div>
+  </section>
+
+
+<section class="cta rv">
+  <h2 data-i18n="cta.h2">Vrei să vezi cât valorează?</h2>
+  <a class="btn" href="#cerere"><span data-i18n="cta.btn">Cere oferta</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="foot-cta">
+    <h2 data-i18n="foot.ctaH">Gata să vinzi?</h2>
+    <a class="btn btn-light" href="#cerere"><span data-i18n="cta.btn">Cere oferta</span><span class="btn-circle"><svg viewBox="0 0 17 14" fill="none" aria-hidden="true"><path d="M1 7h13M9.6 1.4 15.5 7l-5.9 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </div>
+
+  <div class="foot-grid">
+    <nav class="foot-nav" aria-label="Subsol">
+      <a href="#cum" data-i18n="nav.how">Cum funcționează</a>
+      <a href="#cumparam" data-i18n="nav.what">Ce cumpărăm</a>
+      <a href="#cash" data-i18n="cash.badge">Plată cash</a>
+      <a href="#gyik" data-i18n="nav.faq">Întrebări</a>
+    </nav>
+    <div class="foot-col">
+      <p class="micro" data-i18n="foot.contact">Contact</p>
+      <a class="foot-big" href="tel:07XXXXXXXX">07XX XXX XXX</a>
+      <a class="foot-big" href="mailto:[email]">[email]</a>
+    </div>
+    <div class="foot-col">
+      <p class="micro" data-i18n="foot.follow">Urmărește-ne</p>
+      <a href="#" rel="noopener">Instagram</a>
+      <a href="#" rel="noopener">Facebook</a>
+      <a href="#" rel="noopener">LinkedIn</a>
+      <p class="micro" style="margin-top:1.6rem" data-i18n="foot.address">Adresă</p>
+      <address>[Stradă și număr],<br>[Oraș], România</address>
+    </div>
+  </div>
+
+
+  <div class="foot-map" aria-hidden="true">
+    <svg viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" role="presentation">
+      <defs>
+        <linearGradient id="veinFade" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#A85362"/>
+          <stop offset="100%" stop-color="#7B2D3B"/>
+        </linearGradient>
+      </defs>
+
+      <path class="map-outline" d="M648.6 24.0 L616.7 34.2 L603.5 58.3 L519.1 71.1 L501.6 92.6 L488.1 92.8 L460.3 61.3 L429.3 70.7 L365.2 61.8 L334.5 43.3 L292.8 85.0 L260.9 87.4 L236.2 116.4 L235.5 133.3 L201.6 179.8 L204.1 189.7 L187.0 225.0 L172.7 232.2 L170.2 260.8 L159.6 274.3 L124.0 277.7 L111.6 296.9 L99.6 288.4 L78.6 298.7 L117.7 344.2 L128.0 341.6 L124.0 378.6 L189.7 418.8 L176.1 437.1 L193.2 453.6 L175.7 457.5 L179.7 468.5 L195.3 470.4 L200.3 483.0 L232.1 486.7 L243.4 507.1 L270.0 476.8 L297.2 493.0 L300.3 498.7 L273.1 506.6 L292.2 540.0 L325.3 559.3 L311.2 568.4 L311.0 589.1 L359.1 586.3 L425.1 608.0 L454.3 597.5 L475.6 607.9 L498.0 601.9 L531.4 616.0 L568.4 603.0 L600.7 569.0 L681.9 548.5 L710.8 565.9 L732.6 561.6 L740.9 573.5 L756.4 566.4 L763.7 587.7 L816.1 600.7 L828.3 553.3 L821.6 528.1 L863.2 471.8 L903.5 466.2 L912.4 424.1 L921.4 416.4 L890.5 383.6 L848.8 404.3 L835.9 397.2 L826.8 411.5 L795.4 399.3 L780.7 379.6 L772.1 362.3 L779.6 357.7 L771.9 309.9 L773.8 281.4 L787.1 258.2 L786.5 234.6 L772.7 188.2 L744.7 167.0 L740.1 147.6 L727.0 143.4 L726.3 126.0 L701.7 100.8 L679.3 40.7 L648.6 24.0 Z"/>
+
+      <g class="veins">
+        <path class="v1" d="M595.8 512.7 Q596 480 588.7 447.7"/>
+        <path class="v1" d="M588.7 447.7 Q577 399 551.4 357.2"/>
+        <path class="v1" d="M551.4 357.2 Q488 339 422.9 338.1"/>
+        <path class="v1" d="M422.9 338.1 Q408 272 374.2 214.5"/>
+        <path class="v1" d="M374.2 214.5 Q302 186 225.3 178.8"/>
+        <path class="v1" d="M595.8 512.7 Q495 533 391.9 525.4"/>
+        <path class="v1" d="M391.9 525.4 Q262 455 164.2 344.4"/>
+        <path class="v1" d="M595.8 512.7 Q706 543 820.0 545.8"/>
+        <path class="v1" d="M588.7 447.7 Q673 403 766.8 384.0"/>
+        <path class="v1" d="M766.8 384.0 Q730 277 728.7 164.8"/>
+        <path class="v1" d="M728.7 164.8 Q673 125 609.1 102.3"/>
+        <path class="v3" d="M551.4 357.2 Q443 311 374.2 214.5"/>
+        <path class="v3" d="M766.8 384.0 Q777 470 820.0 545.8"/>
+        <path class="v3" d="M422.9 338.1 Q294 372 164.2 344.4"/>
+        <path class="v3" d="M609.1 102.3 Q477 128 374.2 214.5"/>
+        <path class="v3" d="M391.9 525.4 Q495 544 595.8 512.7"/>
+        <path class="v3" d="M728.7 164.8 Q717 280 766.8 384.0"/>
+        <path class="v3" d="M225.3 178.8 Q175 254 164.2 344.4"/>
+        <path class="v3" d="M551.4 357.2 Q594 429 595.8 512.7"/>
+      </g>
+
+      <g class="nodes">
+        <circle cx="595.8" cy="512.7" r="9"/>
+        <circle cx="374.2" cy="214.5" r="6"/>
+        <circle cx="164.2" cy="344.4" r="6"/>
+        <circle cx="728.7" cy="164.8" r="6"/>
+        <circle cx="820.0" cy="545.8" r="6"/>
+        <circle cx="551.4" cy="357.2" r="6"/>
+        <circle cx="391.9" cy="525.4" r="5"/>
+        <circle cx="225.3" cy="178.8" r="5"/>
+        <circle cx="766.8" cy="384.0" r="5"/>
+        <circle cx="422.9" cy="338.1" r="5"/>
+        <circle cx="609.1" cy="102.3" r="5"/>
+        <circle cx="588.7" cy="447.7" r="5"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="foot-mark" aria-hidden="true">acasara<span class="tld">.ro</span></div>
+
+  <div class="foot-bottom">
+    <span>© <span id="year">2026</span> [Denumire SRL] — CUI [—]</span>
+    <span><a href="#" data-i18n="foot.terms">Termeni și condiții</a> ·
+          <a href="#" data-i18n="foot.privacy">Politica de confidențialitate</a></span>
+  </div>
+</footer>
+
+<script src="assets/i18n.js?v=1794320311"></script>
+<script src="assets/site.js?v=1794320225"></script>
+</body>
+</html>
