@@ -102,6 +102,9 @@ def navbar(cur=None):
     links = [("miert.html", "nav.why"), ("folyamat.html", "nav.process"), ("ingatlanok.html", "nav.kinds"), ("gyik.html", "nav.faq")]
     items = (chr(10) + "    ").join(
         '<a href="%s" data-i18n="%s"%s>%s</a>' % (h, k, ' aria-current="page"' if h == cur else "", tx(k)) for h, k in links)
+    mf_items = (chr(10) + "      ").join(
+        '<li style="--i:%d"><a href="%s"%s><b>%02d</b><span data-i18n="%s">%s</span></a></li>'
+        % (i, h, ' aria-current="page"' if h == cur else "", i + 1, k, tx(k)) for i, (h, k) in enumerate(links))
     home = cur is None
     cls = "navbar is-away" if home else "navbar solid"
     static = "" if home else " data-static"
@@ -110,7 +113,7 @@ def navbar(cur=None):
   <a class="brand" href="{'#top' if home else 'index.html'}" aria-label="acasara.ro">
     <span class="wordmark">acasara<span class="tld">.ro</span></span>
   </a>
-  <div class="nav-links" id="navLinks">
+  <div class="nav-links">
     {items}
   </div>
   <div class="nav-end">
@@ -121,9 +124,21 @@ def navbar(cur=None):
       <div class="lang-menu" role="menu"></div>
     </div>
     <a class="btn" href="kezdjuk-el.html" aria-label="{html.escape(T["proc.cta"])}" data-i18n="proc.cta" data-i18n-attr="aria-label"><span data-i18n="proc.cta">{tx("proc.cta")}</span>{ARROW}</a>
-    <button class="nav-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><i></i><i></i></button>
+    <button class="nav-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menuFull"><i></i><i></i></button>
   </div>
 </nav>
+<div class="menu-full" id="menuFull" aria-hidden="true">
+  <div class="mf-glow"></div>
+  <div class="mf-map" aria-hidden="true">
+    <svg viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" role="presentation"><path class="map-outline" d="{MAP_D}"/></svg>
+  </div>
+  <div class="mf-in">
+    <ol class="mf-links">
+      {mf_items}
+    </ol>
+    <a class="mf-cta" href="{'kezdjuk-el.html'}" style="--i:4"><span data-i18n="proc.cta">{tx("proc.cta")}</span></a>
+  </div>
+</div>
 """
 
 

@@ -134,14 +134,20 @@
   function navbar() {
     var bar = document.querySelector(".navbar");
     if (!bar) return;
-    // mobile menu: the burger opens the link panel
+    // mobile menu: the burger opens the full-screen overlay (clip-path circle grows out of the button)
     var burger = bar.querySelector(".nav-burger");
-    if (burger) {
-      var setOpen = function (open) { bar.classList.toggle("open", open); burger.setAttribute("aria-expanded", open ? "true" : "false"); };
-      burger.addEventListener("click", function (e) { e.stopPropagation(); setOpen(!bar.classList.contains("open")); });
-      bar.querySelectorAll(".nav-links a").forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
-      document.addEventListener("click", function (e) { if (!bar.contains(e.target)) setOpen(false); });
+    var overlay = document.getElementById("menuFull");
+    if (burger && overlay) {
+      var setOpen = function (open) {
+        document.body.classList.toggle("menu-open", open);
+        bar.classList.toggle("open", open);
+        burger.setAttribute("aria-expanded", open ? "true" : "false");
+        overlay.setAttribute("aria-hidden", open ? "false" : "true");
+      };
+      burger.addEventListener("click", function () { setOpen(!document.body.classList.contains("menu-open")); });
+      overlay.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
       document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+      window.addEventListener("resize", function () { if (window.innerWidth > 1040) setOpen(false); });
     }
     // sub-pages keep the bar visible from the top
     if (bar.hasAttribute("data-static")) return;
