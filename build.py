@@ -98,13 +98,19 @@ def head(title_key="meta.title", loader=True):
 {LOADER if loader else ""}"""
 
 
+MENU_PHOTOS = ["keys-home.jpg", "signing-desk.jpg", "house-rain.jpg", "phone-morning.jpg"]
+
+
 def navbar(cur=None):
     links = [("miert.html", "nav.why"), ("folyamat.html", "nav.process"), ("ingatlanok.html", "nav.kinds"), ("gyik.html", "nav.faq")]
     items = (chr(10) + "    ").join(
         '<a href="%s" data-i18n="%s"%s>%s</a>' % (h, k, ' aria-current="page"' if h == cur else "", tx(k)) for h, k in links)
+    act = next((i for i, (h, _) in enumerate(links) if h == cur), 0)
     mf_items = (chr(10) + "      ").join(
-        '<li style="--i:%d"><a href="%s"%s><b>%02d</b><span data-i18n="%s">%s</span></a></li>'
-        % (i, h, ' aria-current="page"' if h == cur else "", i + 1, k, tx(k)) for i, (h, k) in enumerate(links))
+        '<li style="--i:%d" data-p="%d"%s><a href="%s"><b>%02d</b><span data-i18n="%s">%s</span></a></li>'
+        % (i, i, ' class="on"' if i == act else "", h, i + 1, k, tx(k)) for i, (h, k) in enumerate(links))
+    mf_photos = "".join('<img src="assets/img/%s" alt=""%s loading="lazy">' % (p, ' class="on"' if i == act else "")
+                        for i, p in enumerate(MENU_PHOTOS))
     home = cur is None
     cls = "navbar is-away" if home else "navbar solid"
     static = "" if home else " data-static"
@@ -128,15 +134,12 @@ def navbar(cur=None):
   </div>
 </nav>
 <div class="menu-full" id="menuFull" aria-hidden="true">
-  <div class="mf-glow"></div>
-  <div class="mf-map" aria-hidden="true">
-    <svg viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" role="presentation"><path class="map-outline" d="{MAP_D}"/></svg>
-  </div>
-  <div class="mf-in">
+  <div class="mf-card">
+    <div class="mf-photo">{mf_photos}</div>
     <ol class="mf-links">
       {mf_items}
     </ol>
-    <a class="mf-cta" href="{'kezdjuk-el.html'}" style="--i:4"><span data-i18n="proc.cta">{tx("proc.cta")}</span></a>
+    <div class="mf-foot"><a class="mf-cta" href="kezdjuk-el.html"><span data-i18n="proc.cta">{tx("proc.cta")}</span></a></div>
   </div>
 </div>
 """

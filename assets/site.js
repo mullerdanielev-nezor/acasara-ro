@@ -134,7 +134,7 @@
   function navbar() {
     var bar = document.querySelector(".navbar");
     if (!bar) return;
-    // mobile menu: the burger opens the full-screen overlay (clip-path circle grows out of the button)
+    // mobile menu: the burger drops a photo card from the top; hovering a row swaps the photo
     var burger = bar.querySelector(".nav-burger");
     var overlay = document.getElementById("menuFull");
     if (burger && overlay) {
@@ -146,6 +146,17 @@
       };
       burger.addEventListener("click", function () { setOpen(!document.body.classList.contains("menu-open")); });
       overlay.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
+      overlay.addEventListener("click", function (e) { if (e.target === overlay) setOpen(false); });
+      var rows = [].slice.call(overlay.querySelectorAll(".mf-links li"));
+      var photos = [].slice.call(overlay.querySelectorAll(".mf-photo img"));
+      var show = function (li) {
+        var p = +li.getAttribute("data-p");
+        rows.forEach(function (x) { x.classList.toggle("on", x === li); });
+        photos.forEach(function (m, k) { m.classList.toggle("on", k === p); });
+      };
+      rows.forEach(function (li) {
+        ["mouseenter", "focusin", "touchstart"].forEach(function (ev) { li.addEventListener(ev, function () { show(li); }, { passive: true }); });
+      });
       document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
       window.addEventListener("resize", function () { if (window.innerWidth > 1040) setOpen(false); });
     }
