@@ -1,4 +1,4 @@
-/* Acasara — shared behaviour: i18n, preloader, navbar, reveal, parallax, offer form.
+/* Acasara - behaviour: i18n, preloader, navbar, reveal, hero playlist, process timeline, calculator, enquiry form.
    Depends on i18n.js (window.T, window.LOCALES). No other dependencies. */
 (function () {
   "use strict";
@@ -8,6 +8,13 @@
   var CODES = LOCALES.map(function (l) { return l.code; });
   var FALLBACK = "ro";
   var STORE = "acasara.lang";
+
+  // TODO: back-end addresses. Empty = nothing is sent yet; the forms still validate and show the confirmation.
+  //   lead     - receives the enquiry form (fields as in the markup)
+  //   estimate - receives the calculator form (azzupp.com computes the estimate on a private server model)
+  var ENDPOINT = { lead: "", estimate: "" };
+
+  function dict() { return T[document.documentElement.lang] || T[FALLBACK]; }
 
   /* ---------- locale resolution ---------- */
 
@@ -28,23 +35,25 @@
   }
 
   function translate(code) {
-    var dict = T[code] || T[FALLBACK];
+    var d = T[code] || T[FALLBACK];
     var base = T[FALLBACK];
 
     document.documentElement.lang = code;
 
     document.querySelectorAll("[data-i18n]").forEach(function (el) {
       var key = el.getAttribute("data-i18n");
-      var val = dict[key] !== undefined ? dict[key] : base[key];
+      var val = d[key] !== undefined ? d[key] : base[key];
       if (val === undefined) return;             // unknown key: leave the markup alone
       var attr = el.getAttribute("data-i18n-attr");
       if (attr) el.setAttribute(attr, val);
       else el.textContent = val;
     });
 
-    // <title> carries its own key so each page gets a translated tab label
+    // <title> carries its own key so the tab label is translated too
     var t = document.querySelector("title[data-i18n]");
     if (t) document.title = t.textContent;
+    var md = document.querySelector('meta[name="description"]');
+    if (md && d["meta.desc"]) md.setAttribute("content", d["meta.desc"]);
 
     try { localStorage.setItem(STORE, code); } catch (e) { /* ignore */ }
 
@@ -73,7 +82,7 @@
 
   /* ---------- language switcher ---------- */
 
-  function buildSwitcher(code) {
+  function buildSwitcher() {
     var wrap = document.querySelector(".lang");
     if (!wrap) return;
 
@@ -124,8 +133,29 @@
 
   function navbar() {
     var bar = document.querySelector(".navbar");
+    if (!bar) return;
+    // mobile menu: the burger opens the link panel
+    var burger = bar.querySelector(".nav-burger");
+    if (burger) {
+      var setOpen = function (open) { bar.classList.toggle("open", open); burger.setAttribute("aria-expanded", open ? "true" : "false"); };
+      burger.addEventListener("click", function (e) { e.stopPropagation(); setOpen(!bar.classList.contains("open")); });
+      bar.querySelectorAll(".nav-links a").forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
+      document.addEventListener("click", function (e) { if (!bar.contains(e.target)) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+    }
+    // sub-pages keep the bar visible from the top
+    if (bar.hasAttribute("data-static")) return;
+    // hidden on the very first screen position; appears once you scroll down and stays (hysteresis avoids flicker)
+    var away = true;
+    function sync() {
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      if (away && y > 56) { away = false; bar.classList.remove("is-away"); }
+      else if (!away && y < 8) { away = true; bar.classList.add("is-away"); }
+    }
+    window.addEventListener("scroll", sync, { passive: true });
+    sync();
     var hero = document.querySelector(".hero");
-    if (!bar || !hero || !window.IntersectionObserver) return;
+    if (!hero || !window.IntersectionObserver) return;
     new IntersectionObserver(function (entries) {
       bar.classList.toggle("is-fixed", !entries[0].isIntersecting);
     }, { rootMargin: "-120px 0px 0px 0px", threshold: 0 }).observe(hero);
@@ -133,17 +163,49 @@
 
   /* ---------- reveal on scroll ---------- */
 
+  /* ---------- enquiry-panel map: a light draws the outline, dots flood in from the centre, then soft rings ---------- */
+
+  function romaniaIntro(map, instant) {
+    var path = map.querySelector(".map-outline"), pen = map.querySelector(".wm-pen"), rev = map.querySelector(".wm-reveal");
+    var rings = [].slice.call(map.querySelectorAll(".wm-ring"));
+    var L = path.getTotalLength(), bb = path.getBBox();
+    var cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
+    var R = Math.sqrt(bb.width * bb.width + bb.height * bb.height) / 2 + 20;
+    rev.setAttribute("cx", cx); rev.setAttribute("cy", cy);
+    rings.forEach(function (r) { r.setAttribute("cx", cx); r.setAttribute("cy", cy); });
+    path.style.strokeDasharray = L;
+    var calm = instant || (window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches);
+    function finish() { pen.style.opacity = 0; path.style.strokeDashoffset = 0; rev.setAttribute("r", R); map.classList.add("done"); }
+    if (calm) { finish(); return; }
+    path.style.strokeDashoffset = L;
+    var DRAW = 3000, FLOOD = 2800, FLOOD_AT = 1300, t0 = null;
+    function ease(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+    function out(x) { return 1 - Math.pow(1 - x, 3); }
+    function frame(now) {
+      if (t0 === null) t0 = now;
+      var t = now - t0;
+      var d = Math.min(1, t / DRAW), e = ease(d);
+      path.style.strokeDashoffset = L * (1 - e);
+      var pt = path.getPointAtLength(L * e);
+      pen.setAttribute("cx", pt.x); pen.setAttribute("cy", pt.y);
+      pen.style.opacity = d < 1 ? 1 : Math.max(0, 1 - (t - DRAW) / 400);
+      var f = Math.max(0, Math.min(1, (t - FLOOD_AT) / FLOOD));
+      rev.setAttribute("r", R * out(f));
+      if (t < FLOOD_AT + FLOOD) requestAnimationFrame(frame); else finish();
+    }
+    requestAnimationFrame(frame);
+  }
+
   function reveal() {
-    // the footer map traces itself once it scrolls into view
-    var map = document.querySelector(".foot-map");
-    if (map && window.IntersectionObserver) {
+    // the Romania outlines (footer + enquiry panel) trace themselves once they scroll into view
+    var maps = [].slice.call(document.querySelectorAll(".foot-map, .wiz-map"));
+    maps.forEach(function (map) {
+      if (!window.IntersectionObserver) { map.classList.add("in"); if (map.classList.contains("wiz-map")) romaniaIntro(map, true); return; }
       var mio = new IntersectionObserver(function (es) {
-        if (es[0].isIntersecting) { map.classList.add("in"); mio.disconnect(); }
+        if (es[0].isIntersecting) { map.classList.add("in"); if (map.classList.contains("wiz-map")) romaniaIntro(map); mio.disconnect(); }
       }, { threshold: .25 });
       mio.observe(map);
-    } else if (map) {
-      map.classList.add("in");
-    }
+    });
 
     var items = document.querySelectorAll(".rv");
     if (!window.IntersectionObserver) {
@@ -162,73 +224,6 @@
       });
     }, { rootMargin: "0px 0px -12% 0px", threshold: .12 });
     items.forEach(function (el) { io.observe(el); });
-  }
-
-  /* ---------- scatter parallax ---------- */
-
-  function parallax() {
-    var stage = document.querySelector(".scatter-stage");
-    if (!stage) return;
-    var layers = [].slice.call(stage.querySelectorAll(".sct"));
-    var depths = [.16, -.1, .22, -.16, .1, -.22];
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var ticking = false;
-
-    function frame() {
-      ticking = false;
-      if (reduce || window.innerWidth <= 860) return;
-      var r = stage.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > window.innerHeight) return;
-      var mid = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
-      layers.forEach(function (el, i) {
-        el.style.translate = "0 " + (mid * (depths[i % depths.length] * 170)).toFixed(1) + "px";
-      });
-    }
-    window.addEventListener("scroll", function () {
-      if (!ticking) { ticking = true; requestAnimationFrame(frame); }
-    }, { passive: true });
-    window.addEventListener("resize", function () {
-      if (window.innerWidth <= 860) layers.forEach(function (el) { el.style.translate = ""; });
-      frame();
-    });
-    frame();
-  }
-
-  /* ---------- offer form ---------- */
-
-  function offerForm() {
-    var form = document.getElementById("offerForm");
-    if (!form) return;
-    var msg = document.getElementById("formMsg");
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var code = document.documentElement.lang || FALLBACK;
-      var dict = T[code] || T[FALLBACK];
-      var ok = true;
-
-      ["address", "name", "phone"].forEach(function (id) {
-        var input = form.elements[id];
-        var field = input.closest(".field");
-        var bad = !input.value.trim();
-        field.classList.toggle("invalid", bad);
-        input.setAttribute("aria-invalid", String(bad));
-        if (bad) ok = false;
-      });
-      if (!form.elements.consent.checked) ok = false;
-
-      msg.className = "form-msg show " + (ok ? "ok" : "bad");
-      msg.textContent = ok ? dict["offer.thanks"] : dict["offer.err"];
-
-      if (ok) {
-        // TODO: POST to your endpoint / CRM here. Shape of the payload:
-        // { address, type, name, phone, lang: code, page: location.pathname }
-        form.reset();
-        ["address", "name", "phone"].forEach(function (id) {
-          form.elements[id].closest(".field").classList.remove("invalid");
-        });
-      }
-    });
   }
 
   /* ---------- hero playlist ---------- */
@@ -319,48 +314,217 @@
     });
   }
 
-  /* ---------- offer calculator ---------- */
+  /* ---------- shared: send a form (or accept it while no endpoint is set) ---------- */
 
-  function calculator() {
+  function postForm(url, form, msg, done) {
+    msg.className = "form-msg show";
+    msg.textContent = dict()["msg.sending"];
+
+    function finish(ok) {
+      msg.className = "form-msg show " + (ok ? "ok" : "bad");
+      msg.textContent = dict()[ok ? "msg.success" : "msg.error"];
+      if (ok && done) done();
+    }
+    if (!url) { finish(true); return; }                       // TODO: endpoint not configured yet
+    fetch(url, { method: "POST", body: new FormData(form) })
+      .then(function (r) { if (!r.ok) throw new Error("http " + r.status); finish(true); })
+      .catch(function () { finish(false); });
+  }
+
+  /* ---------- "Trei pași clari" timeline: the rail fills, steps light up as you pass them ---------- */
+
+  /* ---------- "5 reasons": vertical scroll drives a horizontal track ---------- */
+
+  /* ---------- below-the-fold photos: fetched quietly once the page has settled, so they are ready when you arrive ---------- */
+
+  /* ---------- optional single-choice pills: click the chosen one again to clear it ---------- */
+
+  function clearablePills() {
+    [].forEach.call(document.querySelectorAll("[data-clearable] input[type=radio]"), function (r) {
+      r.addEventListener("pointerdown", function () { r._was = r.checked; });
+      r.addEventListener("click", function () {
+        if (r._was) { r.checked = false; r._was = false; r.dispatchEvent(new Event("change", { bubbles: true })); }
+      });
+    });
+  }
+
+  function warmImages() {
+    var go = function () {
+      [].forEach.call(document.querySelectorAll("img[loading=lazy]"), function (img) {
+        img.loading = "eager";
+        if (img.decode) img.decode().catch(function () {});
+      });
+    };
+    if (document.readyState === "complete") setTimeout(go, 600);
+    else window.addEventListener("load", function () { setTimeout(go, 600); });
+  }
+
+  function whyScroll() {
+    var sec = document.getElementById("miert");
+    if (!sec) return;
+    var track = sec.querySelector(".why-track");
+    var bar = sec.querySelector(".why-bar i");
+    function frame() {
+      if (innerWidth <= 820) { track.style.transform = ""; return; }
+      var r = sec.getBoundingClientRect();
+      var max = sec.offsetHeight - innerHeight;
+      var p = Math.min(1, Math.max(0, -r.top / max));
+      var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;     // scrollWidth leaves out the end padding
+      var dist = Math.max(0, track.scrollWidth + pad - track.parentElement.clientWidth);
+      track.style.transform = "translateX(" + (-p * dist) + "px)";
+      bar.style.width = (p * 100) + "%";
+    }
+    addEventListener("scroll", frame, { passive: true });
+    addEventListener("resize", frame);
+    frame();
+  }
+
+  function howTrack() {
+    var cols = [].slice.call(document.querySelectorAll(".how-col"));
+    if (!cols.length) return;
+    if (!window.IntersectionObserver) { cols.forEach(function (c) { c.classList.add("on"); }); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); } });
+    }, { threshold: 0.25 });
+    cols.forEach(function (c) { io.observe(c); });
+  }
+
+  /* ---------- calculator form: seven steps (blocks of azzupp.com's calculator) ---------- */
+
+  function calcForm() {
     var form = document.getElementById("calcForm");
     if (!form) return;
-    var out = document.getElementById("calcVal");
 
-    // indicative EUR/m2 by build type, then adjusted for condition and age.
-    // deliberately simple and visible: it is a guide, not a valuation.
-    var BASE  = { brick: 1500, panel: 1250, house: 1100, studio: 1600 };
-    var COND  = { new: 1.15, renovated: 1.05, liveable: 0.95, torenovate: 0.80 };
-    var BUY   = [0.78, 0.86];   // what a cash buyer pays against market value
+    var panes = [].slice.call(form.querySelectorAll(".calc-pane"));      // 6 data blocks + the cash-offer question
+    var rail = [].slice.call(form.querySelectorAll("#calcRail li"));
+    var bar = document.getElementById("calcBar");
+    var count = document.getElementById("calcCount");
+    var back = document.getElementById("calcBack");
+    var next = document.getElementById("calcNext");
+    var send = document.getElementById("calcSend");
+    var label = document.getElementById("calcSubmitLabel");
+    var msg = document.getElementById("calcMsg");
+    var body = document.getElementById("cashBody");
+    var yes = document.getElementById("cashYes");
+    var no = document.getElementById("cashNo");
+    var choice = document.getElementById("cashChoice");
+    var phone = document.getElementById("c_cashphone");
+    var range = document.getElementById("areaRange");
+    var rangeVal = document.getElementById("areaVal");
+    var CASH = panes.length - 1;
+    var at = 0;
 
-    function ageFactor(year) {
-      if (!year) return 1;
-      if (year >= 2010) return 1.08;
-      if (year >= 1990) return 1.00;
-      if (year >= 1970) return 0.94;
-      return 0.88;
+    function setLabel(key) {
+      label.setAttribute("data-i18n", key);
+      label.textContent = dict()[key];
+    }
+
+    function paintRange() {
+      rangeVal.textContent = range.value + " m²";
+      range.style.setProperty("--p", ((range.value - range.min) / (range.max - range.min) * 100) + "%");
+    }
+    range.addEventListener("input", paintRange);
+
+    function render() {
+      panes.forEach(function (p, i) { p.classList.toggle("is-hidden", i !== at); });
+      rail.forEach(function (li, i) {
+        li.classList.toggle("done", i < at);
+        if (i === at) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+      });
+      bar.style.width = (((at + 1) / panes.length) * 100) + "%";
+      count.textContent = (at + 1) + " / " + panes.length;
+      back.classList.toggle("is-hidden", at === 0);
+      next.classList.toggle("is-hidden", at >= CASH - 1);
+      send.classList.toggle("is-hidden", at < CASH - 1);
+      setLabel(at === CASH ? "calc.cash.continue" : "calc.submit");
+      msg.className = "form-msg";
+    }
+
+    // the required fields of one pane; shows the browser's own hint on the first bad one
+    function paneOk(i) {
+      var fields = [].slice.call(panes[i].querySelectorAll("input,select,textarea"));
+      for (var k = 0; k < fields.length; k++) {
+        if (!fields[k].disabled && !fields[k].checkValidity()) {
+          msg.className = "form-msg show bad";
+          msg.textContent = dict()["msg.invalid"];
+          fields[k].reportValidity();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function go(i) { at = Math.max(0, Math.min(i, CASH)); render(); form.scrollIntoView({ block: "start", behavior: "smooth" }); }
+
+    next.addEventListener("click", function () { if (paneOk(at)) go(at + 1); });
+    back.addEventListener("click", function () { go(at - 1); });
+    rail.forEach(function (li, i) {
+      li.addEventListener("click", function () { if (i < at) go(i); });     // back only, never past an unchecked step
+    });
+
+    function chooseCash(wants) {
+      choice.value = wants ? "igen" : "nem";
+      phone.disabled = !wants;
+      phone.required = wants;
+      phone.setCustomValidity("");
+      body.classList.toggle("is-hidden", !wants);
+      yes.setAttribute("aria-pressed", String(wants));
+      no.setAttribute("aria-pressed", String(!wants));
+      yes.classList.toggle("is-on", wants);
+      no.classList.toggle("is-on", !wants);
+      if (wants) phone.focus();
+      else { phone.value = ""; form.requestSubmit(); }
+    }
+    yes.addEventListener("click", function () { chooseCash(true); });
+    no.addEventListener("click", function () { chooseCash(false); });
+    phone.addEventListener("input", function () { phone.setCustomValidity(""); });
+
+    function reset() {
+      form.reset();
+      choice.value = "";
+      phone.disabled = true;
+      body.classList.add("is-hidden");
+      yes.classList.remove("is-on");
+      no.classList.remove("is-on");
+      at = 0;
+      paintRange();
+      render();
     }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      var type = (form.querySelector('input[name="ctype"]:checked') || {}).value || "brick";
-      var size = parseFloat(form.elements.csize.value) || 0;
-      var year = parseInt(form.elements.cyear.value, 10) || 0;
-      var cond = form.elements.ccond.value || "liveable";
-
-      if (size <= 0) { out.textContent = "—"; return; }
-
-      var market = BASE[type] * (COND[cond] || 1) * ageFactor(year) * size;
-      var lo = Math.round(market * BUY[0] / 1000) * 1000;
-      var hi = Math.round(market * BUY[1] / 1000) * 1000;
-
-      var code = document.documentElement.lang || FALLBACK;
-      var fmt = new Intl.NumberFormat(code, { style: "currency", currency: "EUR",
-                                              maximumFractionDigits: 0 });
-      out.textContent = fmt.format(lo) + " – " + fmt.format(hi);
+      // every data step must be valid, whichever one the person is on
+      for (var i = 0; i < CASH; i++) {
+        if (!paneOk(i)) { at = i; render(); paneOk(i); return; }
+      }
+      // all data in: next comes the optional cash-offer question, then the run
+      if (!choice.value) {
+        if (at !== CASH) { go(CASH); yes.focus({ preventScroll: true }); }
+        else { msg.className = "form-msg show bad"; msg.textContent = dict()["msg.invalid"]; yes.focus(); }
+        return;
+      }
+      if (choice.value === "igen") {
+        var digits = phone.value.replace(/\D/g, "");
+        if (!/^[+\d\s().-]+$/.test(phone.value) || digits.length < 7 || digits.length > 15) {
+          phone.setCustomValidity(dict()["calc.cash.phone_error"]);
+          phone.reportValidity();
+          return;
+        }
+      }
+      postForm(ENDPOINT.estimate, form, msg, function () {
+        var text = msg.textContent;
+        reset();
+        msg.className = "form-msg show ok";
+        msg.textContent = text;
+      });
     });
+
+    document.addEventListener("acasara:lang", function () { setLabel(label.getAttribute("data-i18n")); });
+    paintRange();
+    render();
   }
 
-  /* ---------- enquiry form: four steps ---------- */
+  /* ---------- enquiry form: four steps (fields of azzupp.com's contact form) ---------- */
 
   function enquiryForm() {
     var form = document.getElementById("enquiry");
@@ -376,13 +540,8 @@
     var msg    = document.getElementById("wizMsg");
 
     // which fields each step insists on before it lets you move on
-    var NEEDED = { 2: ["paddress"], 4: ["plast", "pfirst", "pemail", "pphone"] };
+    var NEEDED = { 2: ["ingatlan_pontos_cime"], 4: ["vezeteknev", "keresztnev", "email", "telefon"] };
     var at = 0;
-
-    function dict() {
-      var code = document.documentElement.lang || FALLBACK;
-      return T[code] || T[FALLBACK];
-    }
 
     function flag(el, bad) {
       var field = el.closest(".field");
@@ -398,7 +557,7 @@
         else li.removeAttribute("aria-current");
       });
       bar.style.width = (((at + 1) / panes.length) * 100) + "%";
-      count.textContent = (dict()["f.stepOf"] || "").replace("{n}", String(at + 1));
+      count.textContent = (at + 1) + " / " + panes.length;
       back.classList.toggle("is-hidden", at === 0);
       next.classList.toggle("is-hidden", at === panes.length - 1);
       send.classList.toggle("is-hidden", at !== panes.length - 1);
@@ -413,21 +572,21 @@
       ids.forEach(function (id) {
         var el = form.elements[id];
         var bad = !el.value.trim();
-        if (!bad && id === "pemail") bad = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value.trim());
+        if (!bad && id === "email") bad = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value.trim());
         flag(el, bad);
         if (bad) { ok = false; firstBad = firstBad || el; }
       });
 
       // the consent box lives on the last step
       if (index === panes.length - 1) {
-        var c = form.elements.pconsent;
+        var c = form.elements.adatkezeles_elfogadva;
         if (!c.checked) { ok = false; firstBad = firstBad || c; c.setAttribute("aria-invalid", "true"); }
         else c.setAttribute("aria-invalid", "false");
       }
 
       if (!ok) {
         msg.className = "form-msg show bad";
-        msg.textContent = dict()["offer.err"];
+        msg.textContent = dict()["msg.invalid"];
         if (firstBad) firstBad.focus();
       }
       return ok;
@@ -457,23 +616,24 @@
       e.preventDefault();
       // re-check every step, not just the last one
       for (var i = 0; i < panes.length; i++) {
-        if (!stepOk(i)) { at = i; render(); msg.className = "form-msg show bad";
-                          msg.textContent = dict()["offer.err"]; return; }
+        if (!stepOk(i)) {
+          at = i; render();
+          msg.className = "form-msg show bad";
+          msg.textContent = dict()["msg.invalid"];
+          return;
+        }
       }
-      msg.className = "form-msg show ok";
-      msg.textContent = dict()["offer.thanks"];
-
-      // TODO: POST to your endpoint / CRM. Payload:
-      // { role, ptype, paddress, psize, pplot, pcond, padv, plisting, pprice,
-      //   plast, pfirst, pemail, pphone, pmsg, lang }
-      form.reset();
-      Object.keys(NEEDED).forEach(function (k) {
-        NEEDED[k].forEach(function (id) { flag(form.elements[id], false); });
+      postForm(ENDPOINT.lead, form, msg, function () {
+        var text = msg.textContent;
+        form.reset();
+        Object.keys(NEEDED).forEach(function (k) {
+          NEEDED[k].forEach(function (id) { flag(form.elements[id], false); });
+        });
+        at = 0;
+        render();
+        msg.className = "form-msg show ok";
+        msg.textContent = text;
       });
-      at = 0;
-      render();
-      msg.className = "form-msg show ok";
-      msg.textContent = dict()["offer.thanks"];
     });
 
     // clear a field's error as soon as it is filled
@@ -484,9 +644,6 @@
       });
     });
 
-    // the step counter has to follow a language change
-    document.addEventListener("acasara:lang", render);
-
     render();
   }
 
@@ -494,16 +651,18 @@
 
   function start() {
     var code = pickLocale();
-    buildSwitcher(code);
+    buildSwitcher();
     translate(code);
     preloader();
     navbar();
     reveal();
-    parallax();
     heroPlaylist();
-    offerForm();
+    howTrack();
+    whyScroll();
+    warmImages();
+    clearablePills();
+    calcForm();
     enquiryForm();
-    calculator();
     var y = document.getElementById("year");
     if (y) y.textContent = new Date().getFullYear();
   }

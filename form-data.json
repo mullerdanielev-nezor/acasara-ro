@@ -1,0 +1,97 @@
+{
+ "calc": {
+  "szobak": [
+   "1",
+   "1+1",
+   "2",
+   "2+1",
+   "3",
+   "3+1",
+   "4",
+   "5+"
+  ],
+  "emelet": [
+   "Földszint",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8",
+   "9",
+   "10",
+   "több mint 10"
+  ],
+  "kilatas": [
+   "Udvar",
+   "Utca",
+   "Kert",
+   "Panoráma"
+  ],
+  "komfort": [
+   "Luxus",
+   "Duplakomfortos",
+   "Összkomfortos",
+   "Komfortos",
+   "Félkomfortos",
+   "Komfort nélküli"
+  ],
+  "tipus": [
+   "Tégla",
+   "Panel",
+   "Családi ház",
+   "Ikerház",
+   "Sorház",
+   "Csúsztatott zsalus"
+  ],
+  "allapot": [
+   "Új építésű",
+   "Újszerű",
+   "Felújított",
+   "Jó állapotú",
+   "Közepes",
+   "Felújítandó",
+   "Bontandó"
+  ],
+  "extra": [
+   "Pince/Tároló",
+   "Garázs",
+   "Parkolóhely",
+   "Lift",
+   "Erkély",
+   "Kert"
+  ]
+ },
+ "lead": {
+  "kapcsolat_tipusa": [
+   "ingatlan_kozvetito",
+   "maganszemely"
+  ],
+  "ingatlan_tipusa": [
+   "Lakás",
+   "Családi ház",
+   "Ikerház",
+   "Sorház",
+   "Telek",
+   "Üzlethelyiség",
+   "Iroda",
+   "Ipari vagy raktár",
+   "Egyéb"
+  ],
+  "ingatlan_allapota": [
+   "Újszerű",
+   "Jó állapotú",
+   "Felújítandó",
+   "Teljes felújítást igényel",
+   "Szerkezetkész",
+   "Egyéb / nem tudom"
+  ],
+  "hirdetve_van": [
+   "Igen",
+   "Nem",
+   "Korábban hirdetve volt"
+  ]
+ }
+}
