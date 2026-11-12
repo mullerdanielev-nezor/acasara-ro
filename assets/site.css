@@ -378,7 +378,8 @@ img[src$="keys.jpg"]{object-position:50% 42%}
 .how-col h3{margin:.5rem 0 .7rem;font-size:clamp(1.3rem,2.2vw,1.6rem);line-height:1.12}
 .how-col p{color:var(--ink-2);line-height:1.6}
 .how-foot{max-width:1180px;margin:clamp(32px,4vw,52px) auto 0;padding-top:1.6rem;border-top:2px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
-@media (max-width:860px){ .how-cols{grid-template-columns:1fr} .how-photo{aspect-ratio:16/10} .how-foot{flex-direction:column;align-items:flex-start} }
+@media (max-width:860px){ .how-cols{grid-template-columns:1fr} .how-photo{aspect-ratio:1/1} .how-foot{flex-direction:column;align-items:flex-start} }
+@media (max-width:560px){ .how-photo{aspect-ratio:4/5} }
 @media (prefers-reduced-motion:reduce){ .how-col::after,.how-num span,.how-photo,.how-photo img{transition:none} }
 
 /* ---------- cash band ---------- */
