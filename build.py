@@ -504,10 +504,16 @@ def sec_why():
 
 def sec_process():
     imgs = ["phone-call.jpg", "city-street.jpg", "keys.jpg"]
+    # one drawn icon per step instead of a big number: contact, assessment, agreement
+    icons = [
+        PROOF_ICON[0],
+        '<path d="M3.5 11 12 4l8.5 7M6 9.5V20h12V9.5"/><path d="M9.5 14.5l2 2 3.5-3.5"/>',
+        '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 15.5l1.7 1.7 3.3-3.6"/>',
+    ]
     cols = chr(10).join(f"""        <li class="how-col" style="--d:{(i - 1) * 0.18:.2f}s">
-          <div class="how-num"><span>{i:02d}</span></div>
+          <div class="how-badge-row"><div class="how-badge">{svg_ico(icons[i - 1], "1.7").replace("<path ", "<path pathLength=" + chr(34) + "1" + chr(34) + " ").replace("<circle ", "<circle pathLength=" + chr(34) + "1" + chr(34) + " ")}</div>{"<i class=" + chr(34) + "how-line" + chr(34) + " aria-hidden=" + chr(34) + "true" + chr(34) + "></i>" if i < 3 else ""}</div>
           <div class="how-photo"><img src="assets/img/{imgs[i - 1]}" alt="" loading="lazy"></div>
-          {el("span", "proc.%dn" % i, "how-n")}
+          <span class="how-n" data-i18n="proc.{i}n">{html.escape(re.sub(r"^\s*\d+\s*/\s*", "", T["proc.%dn" % i]), quote=False)}</span>
           {el("h3", "proc.%dt" % i)}
           {el("p", "proc.%dp" % i)}
         </li>""" for i in range(1, 4))

@@ -44,6 +44,7 @@
       var key = el.getAttribute("data-i18n");
       var val = d[key] !== undefined ? d[key] : base[key];
       if (val === undefined) return;             // unknown key: leave the markup alone
+      if (el.classList.contains("how-n")) val = String(val).replace(/^\s*\d+\s*\/\s*/, "");   // the steps carry icons, not numbers
       var attr = el.getAttribute("data-i18n-attr");
       if (attr) el.setAttribute(attr, val);
       else el.textContent = val;
