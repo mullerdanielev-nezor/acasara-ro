@@ -872,9 +872,10 @@ img[src$="keys.jpg"]{object-position:50% 42%}
 .tr-h2{max-width:1240px;margin:0 auto clamp(18px,2.4vw,32px);font-size:clamp(2.4rem,5.4vw,4.6rem);letter-spacing:-.05em;line-height:1}
 
 /* reviews: round faces + five stars instead of the quote glyph */
-.tr-face{display:block;width:3.6rem;height:3.6rem;border-radius:50%;background:var(--lemon) url(img/phone-call.jpg) no-repeat 100% 2%/auto 235%;box-shadow:0 0 0 3px rgba(255,255,255,.75)}
-.tr-f2{background:var(--lemon) url(img/ugyintezo.png) no-repeat 50% 3%/auto 300%}
-.tr-f3{background-size:auto 190%;background-position:100% 0}
+.tr-face{display:block;width:3.6rem;height:3.6rem;border-radius:50%;background:var(--lemon) center/cover no-repeat;box-shadow:0 0 0 3px rgba(255,255,255,.75)}
+.tr-f1{background-image:url(img/rev-1.jpg)}
+.tr-f2{background-image:url(img/rev-2.jpg)}
+.tr-f3{background-image:url(img/rev-3.jpg)}
 .tr-stars{display:block;margin-bottom:.35rem;font-size:1.05rem;letter-spacing:.14em;line-height:1;color:#E8B400}
 .tr-card:nth-child(3n+2) .tr-stars{color:var(--ink)}
 .tr-card:nth-child(3n+3) .tr-stars{color:var(--lemon)}
