@@ -243,15 +243,6 @@
     }
     // sub-pages keep the bar visible from the top
     if (bar.hasAttribute("data-static")) return;
-    // hidden on the very first screen position; appears once you scroll down and stays (hysteresis avoids flicker)
-    var away = true;
-    function sync() {
-      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-      if (away && y > 56) { away = false; bar.classList.remove("is-away"); }
-      else if (!away && y < 8) { away = true; bar.classList.add("is-away"); }
-    }
-    window.addEventListener("scroll", sync, { passive: true });
-    sync();
     var hero = document.querySelector(".hero");
     if (!hero || !window.IntersectionObserver) return;
     new IntersectionObserver(function (entries) {

@@ -123,7 +123,7 @@ def navbar(cur=None):
     mf_photos = "".join('<img src="assets/img/%s" alt=""%s loading="lazy">' % (p, ' class="on"' if i == act else "")
                         for i, p in enumerate(MENU_PHOTOS))
     home = cur is None
-    cls = "navbar is-away" if home else "navbar solid"
+    cls = "navbar" if home else "navbar solid"
     static = "" if home else " data-static"
     return f"""
 <nav class="{cls}"{static}>
@@ -263,16 +263,12 @@ def sec_hero():
     </div>
     <div class="hero-in">
       <div class="hero-copy">
-        <h1>{el("span", "hero.h1a")} {el("em", "hero.h1b")}</h1>
+        <h1>{el("span", "hero.h1a")}</h1>
+        {el("p", "hero.h1b", "hero-sub")}
         <div class="hero-actions">
           <a class="btn" href="#kalkulator-section"><span data-i18n="hero.btnCalc">{tx("hero.btnCalc")}</span>{ARROW}</a>
           <a class="btn btn-ghost" href="#kapcsolat"><span data-i18n="hero.btnOffer">{tx("hero.btnOffer")}</span>{DOWN}</a>
         </div>
-        <ul class="hero-assure">
-          <li>{CHECK}{el("span", "hero.a1")}</li>
-          <li>{CHECK}{el("span", "hero.a2")}</li>
-          <li>{CHECK}{el("span", "hero.a3")}</li>
-        </ul>
       </div>
     </div>
   </section>
