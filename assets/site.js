@@ -26,12 +26,7 @@
     try { saved = localStorage.getItem(STORE); } catch (e) { /* private mode */ }
     if (saved && CODES.indexOf(saved) > -1) return saved;
 
-    var nav = (navigator.languages || [navigator.language || ""]);
-    for (var i = 0; i < nav.length; i++) {
-      var base = String(nav[i]).toLowerCase().split("-")[0];
-      if (CODES.indexOf(base) > -1) return base;
-    }
-    return FALLBACK;
+    return FALLBACK;   // Romanian is the default; English is an explicit choice
   }
 
   function translate(code) {

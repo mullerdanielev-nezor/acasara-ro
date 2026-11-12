@@ -263,12 +263,14 @@ def sec_hero():
     </div>
     <div class="hero-in">
       <div class="hero-copy">
-        <h1>{el("span", "hero.h1a")}</h1>
+        <div class="hero-trust"><span class="ht-faces" aria-hidden="true"><i style="background-image:url(assets/img/keys-home.jpg)"></i><i style="background-image:url(assets/img/phone-call.jpg)"></i><i style="background-image:url(assets/img/city-street.jpg)"></i></span>{el("span", "hero.a1", "ht-i")}{el("span", "hero.a2", "ht-i")}{el("span", "hero.a3", "ht-i")}</div>
+                <h1>{el("span", "hero.h1a")}</h1>
         {el("p", "hero.h1b", "hero-sub")}
         <div class="hero-actions">
           <a class="btn" href="#kalkulator-section"><span data-i18n="hero.btnCalc">{tx("hero.btnCalc")}</span>{ARROW}</a>
           <a class="btn btn-ghost" href="#kapcsolat"><span data-i18n="hero.btnOffer">{tx("hero.btnOffer")}</span>{DOWN}</a>
         </div>
+        {el("p", "calc.know4", "hero-note")}
       </div>
     </div>
   </section>
@@ -470,6 +472,39 @@ def sec_calc():
 
 
 # ---------------------------------------------------------------- five reasons, three steps, what we buy, band, FAQ
+
+# TODO: placeholder reviews + consultant name (keys tr.r1-3, tr.who1-3, tr.name in assets/i18n.js). Replace with real customer quotes before launch.
+TRUST_KEYS = [("tr.r1", "tr.who1"), ("tr.r2", "tr.who2"), ("tr.r3", "tr.who3")]
+
+
+def sec_trust():
+    def card(k, hidden=False):
+        who = tx(k[1])
+        return ('<div class="tr-card"%s><b class="tr-av" aria-hidden="true">&ldquo;</b><div>'
+                '<p class="tr-q"><span data-i18n="%s">%s</span></p>'
+                '<p class="tr-who" data-i18n="%s">%s</p></div></div>') % (
+                    ' aria-hidden="true"' if hidden else "", k[0], tx(k[0]), k[1], who)
+    cards = "".join(card(k) for k in TRUST_KEYS)
+    dup = "".join(card(k, True) for k in TRUST_KEYS)
+    return f"""
+  <section class="trust" id="velemenyek">
+    <div class="trust-in rv">
+      <figure class="tr-person">
+        <span class="tr-slab" aria-hidden="true"></span>
+        <img src="assets/img/ugyintezo.png" alt="" width="900" height="1124" loading="lazy" decoding="async">
+        <figcaption class="tr-chip">{el("b", "tr.name")}{el("span", "tr.role")}</figcaption>
+      </figure>
+      <div class="tr-body">
+        {el("span", "tr.kicker", "kicker")}
+        {el("p", "why.note", "tr-note")}
+        <div class="tr-col" aria-label="Păreri">
+          <div class="tr-track">{cards}{dup}{cards}{dup}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+"""
+
 
 def sec_why():
     imgs = ["keys-home.jpg", "signing-desk.jpg", "house-worn.jpg", "boxes-room.jpg", "fog-village.jpg"]
@@ -714,7 +749,7 @@ def page_index():
     return head() + navbar() + f"""
 <main id="top">
 {sec_hero()}
-{sec_proof()}
+{sec_trust()}
 {sec_calc()}
 {sec_why()}
 {sec_process()}
