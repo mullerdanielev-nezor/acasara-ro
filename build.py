@@ -114,7 +114,7 @@ MENU_PHOTOS = ["keys-home.jpg", "signing-desk.jpg", "house-rain.jpg", "phone-cal
 
 def navbar(cur=None):
     base = "" if cur is None else "index.html"
-    links = [(base + "#miert-top", "nav.why"), (base + "#folyamat", "nav.process"), (base + "#ingatlanok", "nav.kinds"), (base + "#gyik", "nav.faq")]
+    links = [(base + "#miert", "nav.why"), (base + "#folyamat", "nav.process"), (base + "#ingatlanok", "nav.kinds"), (base + "#gyik", "nav.faq")]
     items = (chr(10) + "    ").join(
         '<a href="%s" data-i18n="%s">%s</a>' % (h, k, tx(k)) for h, k in links)
     act = 0
@@ -180,7 +180,7 @@ FOOTER = f"""
   <div class="foot-body">
     {el("p", "foot.desc", "foot-desc")}
     <nav class="foot-nav" aria-label="Footer">
-      {el("a", "nav.why", None, 'href="#miert-top"')}
+      {el("a", "nav.why", None, 'href="#miert"')}
       {el("a", "nav.process", None, 'href="#folyamat"')}
       {el("a", "nav.kinds", None, 'href="#ingatlanok"')}
       {el("a", "nav.faq", None, 'href="#gyik"')}
@@ -471,14 +471,15 @@ TRUST_KEYS = [("tr.r1", "tr.who1"), ("tr.r2", "tr.who2"), ("tr.r3", "tr.who3")]
 
 
 def sec_trust():
-    def card(k, hidden=False):
+    def card(k, i, hidden=False):
         who = tx(k[1])
-        return ('<div class="tr-card"%s><b class="tr-av" aria-hidden="true">&ldquo;</b><div>'
-                '<p class="tr-q"><span data-i18n="%s">%s</span></p>'
+        return ('<div class="tr-card"%s><i class="tr-face tr-f%d" aria-hidden="true"></i><div>'
+                '<span class="tr-stars" role="img" aria-label="5/5">&#9733;&#9733;&#9733;&#9733;&#9733;</span>'
+                '<p class="tr-q" data-i18n="%s">%s</p>'
                 '<p class="tr-who" data-i18n="%s">%s</p></div></div>') % (
-                    ' aria-hidden="true"' if hidden else "", k[0], tx(k[0]), k[1], who)
-    cards = "".join(card(k) for k in TRUST_KEYS)
-    dup = "".join(card(k, True) for k in TRUST_KEYS)
+                    ' aria-hidden="true"' if hidden else "", i % 3 + 1, k[0], tx(k[0]), k[1], who)
+    cards = "".join(card(k, n) for n, k in enumerate(TRUST_KEYS))
+    dup = "".join(card(k, n, True) for n, k in enumerate(TRUST_KEYS))
     return f"""
   <section class="trust" id="velemenyek">
     <h2 class="tr-h2 rv" data-i18n="tr.h2">{tx("tr.h2")}</h2>
@@ -507,17 +508,15 @@ def sec_why():
           <div class="why-in">{el("h3", "why.%dt" % i)}{el("p", "why.%dp" % i)}</div>
         </article>""" for i in range(1, 6))
     return f"""
-  <section class="why-intro" id="miert-top">
-    <div class="why-intro-in rv">
-      <div>
-        {el("p", "why.eyebrow", "kicker")}
-        {el("h2", "why.h2")}
-      </div>
-      {el("p", "why.lead", "why-lead")}
-    </div>
-  </section>
   <section class="why" id="miert">
     <div class="why-pin">
+      <div class="why-head">
+        <div>
+          {el("p", "why.eyebrow", "kicker")}
+          {el("h2", "why.h2")}
+        </div>
+        {el("p", "why.lead", "why-lead")}
+      </div>
       <div class="why-track">
 {cards}
         <article class="why-p why-end">{el("p", "why.note")}</article>
@@ -627,7 +626,6 @@ def sec_lead():
         {el("p", "lead.eyebrow", "kicker kicker-light")}
         {el("h3", "lead.h2")}
         {el("p", "lead.lead", "wiz-lead")}
-        <div class="wiz-stage">
         <figure class="wiz-map" aria-hidden="true">
           <svg viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" role="presentation">
             <defs>
@@ -644,9 +642,6 @@ def sec_lead():
             <circle class="wm-pen" r="6" cx="0" cy="0"/>
           </svg>
         </figure>
-          <figure class="wiz-guy"><img src="assets/img/ugyintezo.png" alt="" width="900" height="1124" loading="lazy" decoding="async">
-            <figcaption class="tr-chip">{el("b", "tr.name")}{el("span", "tr.role")}</figcaption></figure>
-        </div>
         <ul class="wiz-trust">
           <li>{CHECK}{el("span", "hero.a1")}</li>
           <li>{CHECK}{el("span", "hero.a2")}</li>
@@ -663,12 +658,16 @@ def sec_lead():
       <p class="wiz-count" id="wizCount">1 / 4</p>
 
       <fieldset class="wiz-pane" data-pane="1">
-        <div class="field">
+        <div class="field wiz-roles">
           <div class="pills" role="radiogroup">
             <label class="pill"><input type="radio" name="kapcsolat_tipusa" value="{l["kapcsolat_tipusa"][1]}" checked>
               <span data-i18n="lead.role2">{tx("lead.role2")}</span></label>
             <label class="pill"><input type="radio" name="kapcsolat_tipusa" value="{l["kapcsolat_tipusa"][0]}">
               <span data-i18n="lead.role1">{tx("lead.role1")}</span></label>
+          </div>
+          <div class="wiz-who">
+            <span class="wiz-av" aria-hidden="true"><img src="assets/img/ugyintezo.png" alt="" width="900" height="1124" loading="lazy" decoding="async"></span>
+            <span class="wiz-who-t">{el("b", "tr.name")}{el("span", "tr.role")}</span>
           </div>
         </div>
         <div class="field">
@@ -786,7 +785,7 @@ def page_apply():
   </header>
 {sec_lead()}
 </main>
-{FOOTER_NO_CTA.replace('href="#miert-top"', 'href="index.html#miert-top"').replace('href="#folyamat"', 'href="index.html#folyamat"').replace('href="#ingatlanok"', 'href="index.html#ingatlanok"').replace('href="#gyik"', 'href="index.html#gyik"')}"""
+{FOOTER_NO_CTA.replace('href="#miert"', 'href="index.html#miert"').replace('href="#folyamat"', 'href="index.html#folyamat"').replace('href="#ingatlanok"', 'href="index.html#ingatlanok"').replace('href="#gyik"', 'href="index.html#gyik"')}"""
 
 
 PAGES = {"index.html": page_index, "kezdjuk-el.html": page_apply}

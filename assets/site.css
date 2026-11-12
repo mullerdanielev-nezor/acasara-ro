@@ -816,13 +816,11 @@ img[src$="keys.jpg"]{object-position:50% 42%}
   .hero-note{margin-top:1.2rem;font-size:.85rem}
 }
 @media (max-width:760px){.hero-trust{display:none}}
-.tr-q::before{content:"\201E"}.tr-q::after{content:"\201D"}
 /* hero actions: two separate solid buttons (no pill container) */
 .hero-actions{display:inline-flex;gap:.8rem;padding:0;border-radius:0;background:none;box-shadow:none}
 .hero-actions .btn{box-shadow:0 18px 30px -18px rgba(0,0,0,.6)}
 .hero-actions .btn-ghost{order:0;background:var(--paper);color:var(--ink);box-shadow:0 18px 30px -18px rgba(0,0,0,.6)}
 .hero-actions .btn-ghost:hover{background:#fff}
-html[lang="en"] .tr-q::before{content:"\201C"}
 
 /* calculator intro lives in the wine box now */
 .calc-know{text-align:center;justify-items:center;gap:.9rem;padding:clamp(30px,4vw,56px) clamp(22px,4vw,56px)}
@@ -831,13 +829,16 @@ html[lang="en"] .tr-q::before{content:"\201C"}
 .calc-know h2 em{font-style:normal;color:var(--ink);background:var(--lemon);padding:0 .14em}
 .calc-know .calc-lead{max-width:64ch;margin:0 auto;color:rgba(251,247,244,.86)}
 
-/* five reasons: big heading as its own block above the pinned strip */
-.why-intro{background:var(--ink);color:var(--paper);padding:clamp(100px,12vw,160px) var(--gutter) clamp(20px,3vw,40px)}
-.why-intro-in{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,.6fr);gap:clamp(20px,4vw,64px);align-items:end}
-.why-intro h2{font-size:clamp(2.6rem,5.25vw,4.8rem);line-height:1.02;letter-spacing:-.05em;max-width:19ch}
-.why-intro .kicker{margin-bottom:1rem}
-.why-pin .why-track{margin-top:0}
-@media (max-width:820px){.why-intro-in{grid-template-columns:1fr}.why-intro{padding-top:80px}.why-intro h2{font-size:clamp(2.2rem,10vw,3.2rem)}}
+/* five reasons: the big heading stays in view while the strip scrolls sideways */
+@media (min-width:821px){
+  .why-pin{justify-content:flex-start;padding-top:84px}
+  .why-head{position:static;margin:0 var(--gutter) clamp(14px,2.4vh,26px);align-items:flex-end}
+  .why-head h2{font-size:clamp(2rem,min(5.2vw,10.4vh),5rem);line-height:1.02;letter-spacing:-.05em;max-width:25ch}
+  .why-head .kicker{margin-bottom:.7rem}
+  .why-track{flex:1;min-height:0;margin-top:0;margin-bottom:clamp(78px,13vh,104px);align-items:stretch}
+  .why-p{height:auto}
+}
+@media (max-width:820px){.why-head h2{font-size:clamp(2.2rem,10vw,3.2rem);line-height:1.04;letter-spacing:-.045em}}
 
 /* house deck */
 .deck{position:relative}
@@ -857,14 +858,29 @@ html[lang="en"] .tr-q::before{content:"\201C"}
 .deck-count{font-weight:700;font-size:.9rem;letter-spacing:.08em;opacity:.8}
 @media (max-width:860px){.deck-stack{margin-right:6%}}
 
-/* wizard: consultant cut-out in the wine aside */
-.wiz-stage{position:relative;margin:1rem 0 .4rem;min-height:300px;display:flex;align-items:flex-end;justify-content:center}
-.wiz-stage .wiz-map{position:absolute;inset:0;margin:0;opacity:.55}
-.wiz-guy{position:relative;margin:0;line-height:0;width:min(56%,250px)}
-.wiz-guy::before{content:"";position:absolute;left:6%;right:6%;top:30%;bottom:0;background:var(--lemon);border-radius:var(--r-img) var(--r-img) 0 0}
-.wiz-guy img{position:relative;display:block;width:100%;height:auto;max-height:340px;object-fit:contain;object-position:50% 100%}
-.wiz-guy .tr-chip{bottom:.6rem;padding:.5rem .8rem}
-.wiz-guy .tr-chip b{font-size:.9rem}.wiz-guy .tr-chip span{font-size:.7rem}
+/* wizard: consultant avatar next to the role pills */
+.wiz-roles{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 1.4rem}
+.wiz-who{display:flex;align-items:center;gap:.8rem;text-align:left}
+.wiz-av{position:relative;flex:none;width:4rem;height:4rem;border-radius:50%;overflow:hidden;background:var(--lemon);box-shadow:0 0 0 3px #fff,0 0 0 5px var(--lemon)}
+.wiz-av img{position:absolute;left:50%;top:6%;width:150%;max-width:none;height:auto;transform:translateX(-50%)}
+.wiz-who-t{display:flex;flex-direction:column;line-height:1.2}
+.wiz-who-t b{font-size:.95rem}
+.wiz-who-t span{font-size:.78rem;color:var(--ink-2)}
+@media (max-width:560px){.wiz-who{width:100%}}
 
 /* about-us headline above the trust card */
 .tr-h2{max-width:1240px;margin:0 auto clamp(18px,2.4vw,32px);font-size:clamp(2.4rem,5.4vw,4.6rem);letter-spacing:-.05em;line-height:1}
+
+/* reviews: round faces + five stars instead of the quote glyph */
+.tr-face{display:block;width:3.6rem;height:3.6rem;border-radius:50%;background:var(--lemon) url(img/phone-call.jpg) no-repeat 100% 2%/auto 235%;box-shadow:0 0 0 3px rgba(255,255,255,.75)}
+.tr-f2{background:var(--lemon) url(img/ugyintezo.png) no-repeat 50% 3%/auto 300%}
+.tr-f3{background-size:auto 190%;background-position:100% 0}
+.tr-stars{display:block;margin-bottom:.35rem;font-size:1.05rem;letter-spacing:.14em;line-height:1;color:#E8B400}
+.tr-card:nth-child(3n+2) .tr-stars{color:var(--ink)}
+.tr-card:nth-child(3n+3) .tr-stars{color:var(--lemon)}
+.tr-card{align-items:start}
+
+/* calculator title: the lemon marker must not run into the next line on phones */
+.calc-know h2{line-height:1.12}
+.calc-know h2 em{display:inline-block;line-height:1.02;padding:.04em .16em .08em;margin-bottom:.12em}
+@media (max-width:860px){.tr-h2{margin-bottom:clamp(44px,12vw,64px)}}
