@@ -65,10 +65,21 @@ CHEVRON = ('<svg viewBox="0 0 11 7" fill="none" aria-hidden="true">'
 # ---------------------------------------------------------------- partials
 
 LOADER = """<div class="loader" id="loader" aria-hidden="true">
-  <div class="loader-mark">
-    <span class="wordmark">acasara<span class="tld">.ro</span></span>
-  </div>
-  <div class="loader-bar"><i></i></div>
+  <svg id="loaderSvg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <defs>
+      <mask id="loaderMask" maskUnits="userSpaceOnUse">
+        <rect id="lmRect" fill="#fff"/>
+        <circle id="lmIris" r="0" fill="#000"/>
+        <text id="lmText" text-anchor="middle" dominant-baseline="central" font-family="Onest, system-ui, sans-serif" font-weight="800">acasara.ro</text>
+      </mask>
+      <radialGradient id="lmGrad" cx="50%" cy="42%" r="78%">
+        <stop offset="0" stop-color="#8A3544"/>
+        <stop offset="1" stop-color="#5E202C"/>
+      </radialGradient>
+    </defs>
+    <rect id="lpRect" fill="#FBF7F4"/>
+    <rect id="lcRect" fill="url(#lmGrad)" mask="url(#loaderMask)"/>
+  </svg>
 </div>
 """
 

@@ -64,16 +64,11 @@ p{margin:0}
 .btn-ink .btn-circle svg{color:var(--ink)}
 .btn-wide{width:100%;justify-content:flex-start;height:3.6rem}
 
-/* ---------- preloader ---------- */
-.loader{position:fixed;inset:0;z-index:110;background:var(--paper);display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s}
-.loader.done{opacity:0;visibility:hidden}
-.loader-mark{display:flex;align-items:baseline;animation:markIn 1s cubic-bezier(.2,.8,.2,1) both}
-.loader-mark .wordmark{font-family:var(--font-display);font-weight:900;font-size:clamp(2.2rem,5.4vw,3.8rem);letter-spacing:-.055em;line-height:.9}
-.loader-mark .tld{color:var(--wine)}
-.loader-bar{position:absolute;left:50%;bottom:clamp(48px,9vh,96px);transform:translateX(-50%);width:min(240px,42vw);height:2px;background:var(--line);overflow:hidden;border-radius:2px}
-.loader-bar i{display:block;height:100%;width:40%;background:var(--wine);animation:barSlide 1.1s cubic-bezier(.5,0,.5,1) infinite}
-@keyframes markIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes barSlide{0%{transform:translateX(-110%)}100%{transform:translateX(260%)}}
+/* ---------- preloader: a wine sheet with the wordmark cut out; the page shows through the letters, then the camera zooms into them ---------- */
+.loader{position:fixed;inset:0;z-index:110}
+.loader svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.loader.done{visibility:hidden;pointer-events:none}
+#lmText{will-change:transform;fill:#000;fill-opacity:0}
 
 /* ---------- navbar: floating capsule ---------- */
 .navbar{position:fixed;top:var(--edge);left:var(--edge);right:var(--edge);z-index:60;

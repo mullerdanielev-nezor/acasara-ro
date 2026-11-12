@@ -119,14 +119,94 @@
   function preloader() {
     var el = document.getElementById("loader");
     if (!el) return;
-    var start = Date.now();
-    function hide() {
-      setTimeout(function () { el.classList.add("done"); }, Math.max(0, 1400 - (Date.now() - start)));
+    var svg = document.getElementById("loaderSvg");
+    var mRect = document.getElementById("lmRect");
+    var cRect = document.getElementById("lcRect");
+    var pRect = document.getElementById("lpRect");
+    var iris = document.getElementById("lmIris");
+    var mask = document.getElementById("loaderMask");
+    var txt = document.getElementById("lmText");
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var W = 0, H = 0, ox = 0, oy = 0, fs = 0, started = false, finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      el.classList.add("done");
     }
-    if (document.readyState === "complete") hide();
-    else window.addEventListener("load", hide);
-    // never trap the page behind a stalled asset
-    setTimeout(function () { el.classList.add("done"); }, 6000);
+
+    function layout() {
+      W = window.innerWidth; H = window.innerHeight;
+      fs = Math.min(W * 0.15, H * 0.22);
+      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      [mRect, cRect, pRect].forEach(function (r) {
+        r.setAttribute("x", 0); r.setAttribute("y", 0);
+        r.setAttribute("width", W); r.setAttribute("height", H);
+      });
+      mask.setAttribute("x", 0); mask.setAttribute("y", 0);
+      mask.setAttribute("width", W); mask.setAttribute("height", H);
+      txt.setAttribute("x", W / 2); txt.setAttribute("y", H / 2);
+      txt.setAttribute("font-size", fs);
+      txt.setAttribute("letter-spacing", (-0.045 * fs).toFixed(2));
+      // zoom into the stem of the "r" so the cut-out floods the whole screen
+      ox = W / 2; oy = H / 2 + fs * 0.04;
+      try {
+        var b = txt.getExtentOfChar(5);
+        ox = b.x + b.width * 0.3;
+      } catch (e) {}
+      txt.style.transformOrigin = ox + "px " + oy + "px";
+      iris.setAttribute("cx", ox); iris.setAttribute("cy", oy);
+    }
+
+    function ease(p) { return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }
+    function smooth(p) { p = Math.max(0, Math.min(1, p)); return p * p * (3 - 2 * p); }
+    function outCubic(p) { return 1 - Math.pow(1 - p, 3); }
+
+    function run() {
+      if (started) return;
+      started = true;
+      layout();
+      window.addEventListener("resize", layout);
+      if (reduce) {
+        txt.style.fillOpacity = 1;
+        cRect.style.transition = "opacity .5s ease";
+        pRect.style.transition = "opacity .5s ease";
+        setTimeout(function () { cRect.style.opacity = 0; pRect.style.opacity = 0; }, 500);
+        setTimeout(finish, 1100);
+        return;
+      }
+      var t0 = performance.now(), loaded = document.readyState === "complete", releaseAt = 0;
+      if (!loaded) window.addEventListener("load", function () { loaded = true; });
+      var IN = 600, MIN = 1050, ZOOM = 1250, S = 70;
+      (function frame(now) {
+        var t = now - t0;
+        var a = Math.min(1, t / IN), ea = outCubic(a);
+        if (!releaseAt) {
+          txt.style.fillOpacity = ea;
+          txt.style.transform = "scale(" + (0.94 + 0.06 * ea + 0.035 * Math.min(1, t / MIN)).toFixed(4) + ")";
+          if (t >= MIN && loaded) releaseAt = now;
+          else if (t > 6000) releaseAt = now;
+        }
+        if (releaseAt) {
+          var z = Math.min(1, (now - releaseAt) / ZOOM), e = ease(z);
+          txt.style.transform = "scale(" + (1.035 * Math.pow(S, e)).toFixed(3) + ")";
+          // the clean paper behind the letters goes first (so the real page shows through them);
+          // then a round opening grows out of the zoom point and clears every last scrap of wine,
+          // so nothing is left to fade or drift sideways at the end
+          pRect.style.opacity = (1 - smooth((z - 0.1) / 0.3)).toFixed(3);
+          iris.setAttribute("r", (Math.hypot(W, H) * smooth((z - 0.4) / 0.6)).toFixed(1));
+          if (z >= 1) { finish(); window.removeEventListener("resize", layout); return; }
+        }
+        requestAnimationFrame(frame);
+      })(t0);
+    }
+
+    // wait for the wordmark font, but never trap the page behind a stalled asset
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load("800 40px Onest").then(run, run);
+      setTimeout(run, 1500);
+    } else run();
+    setTimeout(finish, 9000);
   }
 
   /* ---------- navbar over a video hero ---------- */
