@@ -503,7 +503,7 @@ def sec_why():
 
 
 def sec_process():
-    imgs = ["phone-call.jpg", "city-street.jpg", "signing.jpg"]
+    imgs = ["phone-call.jpg", "city-street.jpg", "keys.jpg"]
     cols = chr(10).join(f"""        <li class="how-col" style="--d:{(i - 1) * 0.18:.2f}s">
           <div class="how-num"><span>{i:02d}</span></div>
           <div class="how-photo"><img src="assets/img/{imgs[i - 1]}" alt="" loading="lazy"></div>

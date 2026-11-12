@@ -373,6 +373,7 @@ p{margin:0}
 .how-col.on .how-photo img{transform:none}
 /* the phone-call photo has its face and phone in the upper part: when a wide crop is cut from it (mobile, menu card) keep the top */
 img[src$="phone-call.jpg"]{object-position:50% 6%}
+img[src$="keys.jpg"]{object-position:50% 42%}
 .how-n{display:block;font-size:.78rem;font-weight:800;letter-spacing:.14em;color:var(--wine)}
 .how-col h3{margin:.5rem 0 .7rem;font-size:clamp(1.3rem,2.2vw,1.6rem);line-height:1.12}
 .how-col p{color:var(--ink-2);line-height:1.6}
