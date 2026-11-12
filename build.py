@@ -745,6 +745,10 @@ def make_sub(i):
     return page
 
 
+# the application page already is the destination of that button, so its footer card goes without it
+FOOTER_NO_CTA = re.sub(r'\n[ \t]*<a class="btn btn-light" href="kezdjuk-el.html">.*?</a>', "", FOOTER, count=1)
+
+
 def page_apply():
     key = "proc.cta"
     return head(key, False) + navbar("kezdjuk-el.html") + f"""
@@ -755,7 +759,7 @@ def page_apply():
   </header>
 {sec_lead()}
 </main>
-{FOOTER}"""
+{FOOTER_NO_CTA}"""
 
 
 PAGES = {"index.html": page_index, "kezdjuk-el.html": page_apply}
