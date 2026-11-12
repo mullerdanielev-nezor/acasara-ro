@@ -310,6 +310,39 @@
     items.forEach(function (el) { io.observe(el); });
   }
 
+  /* ---------- house deck ---------- */
+
+  function houseDeck() {
+    var root = document.getElementById("houseDeck");
+    if (!root) return;
+    var cards = [].slice.call(root.querySelectorAll(".deck-card"));
+    var count = document.getElementById("deckCount");
+    var order = cards.map(function (_, i) { return i; });
+    var busy = false;
+
+    function paint() {
+      cards.forEach(function (c, i) { c.setAttribute("data-p", Math.min(order.indexOf(i), 3)); });
+      if (count) count.textContent = (order[0] + 1) + " / " + cards.length;
+    }
+    function next() {
+      if (busy) return;
+      busy = true;
+      var first = order.shift();
+      cards[first].setAttribute("data-p", "out");
+      setTimeout(function () { order.push(first); paint(); busy = false; }, 520);
+    }
+    function prev() {
+      if (busy) return;
+      order.unshift(order.pop());
+      paint();
+    }
+    root.querySelectorAll(".deck-btn").forEach(function (b) {
+      b.addEventListener("click", function () { (b.getAttribute("data-dir") === "-1" ? prev : next)(); });
+    });
+    cards.forEach(function (c) { c.addEventListener("click", function () { if (c.getAttribute("data-p") === "0") next(); }); });
+    paint();
+  }
+
   /* ---------- hero playlist ---------- */
 
   function heroPlaylist() {
@@ -741,6 +774,7 @@
     navbar();
     reveal();
     heroPlaylist();
+    houseDeck();
     howTrack();
     whyScroll();
     warmImages();

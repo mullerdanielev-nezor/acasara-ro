@@ -242,7 +242,10 @@ window.T = {
   "tr.who1": "Nume Prenume, Brașov",
   "tr.who2": "Nume Prenume, Sibiu",
   "tr.who3": "Nume Prenume, Cluj",
-  "tr.name": "Nume Prenume"
+  "tr.name": "Nume Prenume",
+  "deck.prev": "Imaginea anterioară",
+  "deck.next": "Imaginea următoare",
+  "tr.h2": "Despre noi"
  },
  "en": {
   "meta.title": "Cash House Buyers – Sell Your Home Directly | acasara.ro",
@@ -472,6 +475,9 @@ window.T = {
   "tr.who1": "First Last, Brașov",
   "tr.who2": "First Last, Sibiu",
   "tr.who3": "First Last, Cluj",
-  "tr.name": "First Last"
+  "tr.name": "First Last",
+  "deck.prev": "Previous image",
+  "deck.next": "Next image",
+  "tr.h2": "About us"
  }
 };

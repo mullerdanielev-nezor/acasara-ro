@@ -20,8 +20,7 @@ Aztán: http://127.0.0.1:8731/index.html (a `file://` alatt a videók és a nyel
 
 ```
 index.html          generált, ne kézzel szerkeszd (a főoldal)
-miert.html, folyamat.html, ingatlanok.html, gyik.html, kezdjuk-el.html
-                    generált aloldalak (a menü ezekre mutat; ugyanazokat a szekciókat használják, mint a főoldal)
+kezdjuk-el.html     a jelentkezős oldal (generált); a menü a főoldal szekcióira (#horgonyokra) mutat
 build.py            oldalgenerátor; a román alapszövegeket az assets/i18n.js "ro" blokkjából olvassa
 form-data.json      a két űrlap select/rádió/jelölőnégyzet értékei (a forrás magyar értékei)
 assets/

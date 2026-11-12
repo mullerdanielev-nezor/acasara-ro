@@ -99,7 +99,7 @@ def head(title_key="meta.title", loader=True):
 <!--
   Acasara. All copy is imported from azzupp.com (assets/i18n.js, 11 locales) with the brand name
   swapped. Phone, e-mail, company data and the form / estimate endpoints are still open: search for
-  "[", "07XX" and "TODO". Nothing is loaded from a third party: fonts (Onest, SIL OFL), images,
+  "[" and "TODO" (the phone number 0721 234 567 is a template, replace it). Nothing is loaded from a third party: fonts (Onest, SIL OFL), images,
   video and scripts are all in assets/. See README.md.
 -->
 </head>
@@ -113,10 +113,11 @@ MENU_PHOTOS = ["keys-home.jpg", "signing-desk.jpg", "house-rain.jpg", "phone-cal
 
 
 def navbar(cur=None):
-    links = [("miert.html", "nav.why"), ("folyamat.html", "nav.process"), ("ingatlanok.html", "nav.kinds"), ("gyik.html", "nav.faq")]
+    base = "" if cur is None else "index.html"
+    links = [(base + "#miert-top", "nav.why"), (base + "#folyamat", "nav.process"), (base + "#ingatlanok", "nav.kinds"), (base + "#gyik", "nav.faq")]
     items = (chr(10) + "    ").join(
-        '<a href="%s" data-i18n="%s"%s>%s</a>' % (h, k, ' aria-current="page"' if h == cur else "", tx(k)) for h, k in links)
-    act = next((i for i, (h, _) in enumerate(links) if h == cur), 0)
+        '<a href="%s" data-i18n="%s">%s</a>' % (h, k, tx(k)) for h, k in links)
+    act = 0
     mf_items = (chr(10) + "      ").join(
         '<li style="--i:%d" data-p="%d"%s><a href="%s"><b>%02d</b><span data-i18n="%s">%s</span></a></li>'
         % (i, i, ' class="on"' if i == act else "", h, i + 1, k, tx(k)) for i, (h, k) in enumerate(links))
@@ -171,18 +172,18 @@ FOOTER = f"""
     </div>
     <div class="foot-card-ct">
       {el("p", "nav.contact", "micro")}
-      <a class="foot-big" href="tel:07XXXXXXXX">07XX XXX XXX</a>
-      <a class="foot-big" href="mailto:[email]">[email]</a>
+      <a class="foot-big" href="tel:+40721234567">0721 234 567</a>
+      <a class="foot-big" href="mailto:info@acasara.ro">info@acasara.ro</a>
     </div>
   </div>
 
   <div class="foot-body">
     {el("p", "foot.desc", "foot-desc")}
     <nav class="foot-nav" aria-label="Footer">
-      {el("a", "nav.why", None, 'href="miert.html"')}
-      {el("a", "nav.process", None, 'href="folyamat.html"')}
-      {el("a", "nav.kinds", None, 'href="ingatlanok.html"')}
-      {el("a", "nav.faq", None, 'href="gyik.html"')}
+      {el("a", "nav.why", None, 'href="#miert-top"')}
+      {el("a", "nav.process", None, 'href="#folyamat"')}
+      {el("a", "nav.kinds", None, 'href="#ingatlanok"')}
+      {el("a", "nav.faq", None, 'href="#gyik"')}
       {el("a", "nav.contact", None, 'href="#kapcsolat"')}
     </nav>
   </div>
@@ -353,20 +354,12 @@ def cb_head(n, with_note=True):
 def sec_calc():
     c = FORM["calc"]
     rail = (chr(10) + "        ").join('<li><b>%s</b>%s</li>' % (svg_ico(STEP7_ICON[i - 1]), el("span", "calc.b%dt" % i)) for i in range(1, 8))
-    know = chr(10).join('        <li><i class="know-ico">%s</i>%s</li>' % (svg_ico(KNOW_ICON[i - 1]), el("span", "calc.know%d" % i)) for i in range(1, 6))
     return f"""
   <section class="calc" id="kalkulator-section">
-    <div class="calc-head rv">
+    <div class="calc-know rv">
       {el("p", "calc.eyebrow", "kicker")}
       <h2><em data-i18n="calc.h1a">{tx("calc.h1a")}</em> <span data-i18n="calc.h1b">{tx("calc.h1b")}</span></h2>
       {el("p", "calc.lead", "calc-lead")}
-    </div>
-
-    <div class="calc-know rv">
-      {el("h3", "calc.knowH")}
-      <ul>
-{know}
-      </ul>
     </div>
 
     <form class="calc-card rv" id="calcForm" novalidate>
@@ -488,6 +481,7 @@ def sec_trust():
     dup = "".join(card(k, True) for k in TRUST_KEYS)
     return f"""
   <section class="trust" id="velemenyek">
+    <h2 class="tr-h2 rv" data-i18n="tr.h2">{tx("tr.h2")}</h2>
     <div class="trust-in rv">
       <figure class="tr-person">
         <span class="tr-slab" aria-hidden="true"></span>
@@ -495,7 +489,6 @@ def sec_trust():
         <figcaption class="tr-chip">{el("b", "tr.name")}{el("span", "tr.role")}</figcaption>
       </figure>
       <div class="tr-body">
-        {el("span", "tr.kicker", "kicker")}
         {el("p", "why.note", "tr-note")}
         <div class="tr-col" aria-label="Păreri">
           <div class="tr-track">{cards}{dup}{cards}{dup}</div>
@@ -514,15 +507,17 @@ def sec_why():
           <div class="why-in">{el("h3", "why.%dt" % i)}{el("p", "why.%dp" % i)}</div>
         </article>""" for i in range(1, 6))
     return f"""
+  <section class="why-intro" id="miert-top">
+    <div class="why-intro-in rv">
+      <div>
+        {el("p", "why.eyebrow", "kicker")}
+        {el("h2", "why.h2")}
+      </div>
+      {el("p", "why.lead", "why-lead")}
+    </div>
+  </section>
   <section class="why" id="miert">
     <div class="why-pin">
-      <div class="why-head">
-        <div>
-          {el("p", "why.eyebrow", "kicker")}
-          {el("h2", "why.h2")}
-        </div>
-        {el("p", "why.lead", "why-lead")}
-      </div>
       <div class="why-track">
 {cards}
         <article class="why-p why-end">{el("p", "why.note")}</article>
@@ -565,7 +560,11 @@ def sec_process():
 """
 
 
+DECK_IMGS = ["house-rain.jpg", "house-worn.jpg", "city-street.jpg", "keys-home.jpg"]
+
+
 def sec_kinds():
+    DECK_CARDS = chr(10).join('            <figure class="deck-card" data-p="%d"><img src="assets/img/%s" alt="" width="1500" height="1125" loading="lazy"></figure>' % (i, f) for i, f in enumerate(DECK_IMGS))
     pts = chr(10).join(f"""        <li style="--i:{i - 1}">{CHECK}<span>{el("strong", "kinds.%dt" % i)} {el("span", "kinds.%dp" % i)}</span></li>"""
                        for i in range(1, 7))
     return f"""
@@ -577,7 +576,16 @@ def sec_kinds():
           {el("h2", "kinds.h2", "rv")}
           {el("p", "kinds.lead", "cash-lead rv")}
         </div>
-        <figure class="band-photo rv"><img src="assets/img/house-rain.jpg" alt="" width="1500" height="844" loading="lazy"></figure>
+        <div class="deck rv" id="houseDeck">
+          <div class="deck-stack">
+{DECK_CARDS}
+          </div>
+          <div class="deck-ctl">
+            <button type="button" class="deck-btn" data-dir="-1" data-i18n="deck.prev" data-i18n-attr="aria-label" aria-label="{tx("deck.prev")}">&larr;</button>
+            <span class="deck-count" id="deckCount">1 / 4</span>
+            <button type="button" class="deck-btn deck-next" data-dir="1" data-i18n="deck.next" data-i18n-attr="aria-label" aria-label="{tx("deck.next")}">&rarr;</button>
+          </div>
+        </div>
       </div>
       <ul class="cash-points band-points rv">
 {pts}
@@ -619,6 +627,7 @@ def sec_lead():
         {el("p", "lead.eyebrow", "kicker kicker-light")}
         {el("h3", "lead.h2")}
         {el("p", "lead.lead", "wiz-lead")}
+        <div class="wiz-stage">
         <figure class="wiz-map" aria-hidden="true">
           <svg viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" role="presentation">
             <defs>
@@ -635,6 +644,9 @@ def sec_lead():
             <circle class="wm-pen" r="6" cx="0" cy="0"/>
           </svg>
         </figure>
+          <figure class="wiz-guy"><img src="assets/img/ugyintezo.png" alt="" width="900" height="1124" loading="lazy" decoding="async">
+            <figcaption class="tr-chip">{el("b", "tr.name")}{el("span", "tr.role")}</figcaption></figure>
+        </div>
         <ul class="wiz-trust">
           <li>{CHECK}{el("span", "hero.a1")}</li>
           <li>{CHECK}{el("span", "hero.a2")}</li>
@@ -760,28 +772,6 @@ def page_index():
 {FOOTER}"""
 
 
-SUBS = [("miert.html", "nav.why", sec_why), ("folyamat.html", "nav.process", sec_process),
-        ("ingatlanok.html", "nav.kinds", sec_kinds), ("gyik.html", "nav.faq", sec_faq)]
-
-
-def make_sub(i):
-    def page():
-        name, key, sec = SUBS[i]
-        nname, nkey, _ = SUBS[(i + 1) % len(SUBS)]
-        out = head(key, False) + navbar(name) + f"""
-<main id="top">
-  <header class="page-head{" wide" if name == "miert.html" else ""}">
-    <p class="crumbs"><a href="index.html">acasara.ro</a><i>/</i><span data-i18n="{key}">{tx(key)}</span></p>
-    {el("h1", key)}
-  </header>
-{sec()}
-  <a class="next-page" href="{nname}"><span class="np-t" data-i18n="{nkey}">{tx(nkey)}</span><span class="np-ar" aria-hidden="true">&rarr;</span></a>
-</main>
-{FOOTER}"""
-        return out.replace('href="#kapcsolat"', 'href="kezdjuk-el.html"')
-    return page
-
-
 # the application page already is the destination of that button, so its footer card goes without it
 FOOTER_NO_CTA = re.sub(r'\n[ \t]*<a class="btn btn-light" href="kezdjuk-el.html">.*?</a>', "", FOOTER, count=1)
 
@@ -796,12 +786,10 @@ def page_apply():
   </header>
 {sec_lead()}
 </main>
-{FOOTER_NO_CTA}"""
+{FOOTER_NO_CTA.replace('href="#miert-top"', 'href="index.html#miert-top"').replace('href="#folyamat"', 'href="index.html#folyamat"').replace('href="#ingatlanok"', 'href="index.html#ingatlanok"').replace('href="#gyik"', 'href="index.html#gyik"')}"""
 
 
 PAGES = {"index.html": page_index, "kezdjuk-el.html": page_apply}
-for _i, (_name, _k, _s) in enumerate(SUBS):
-    PAGES[_name] = make_sub(_i)
 
 if __name__ == "__main__":
     for name, fn in PAGES.items():
