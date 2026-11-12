@@ -109,7 +109,7 @@ def head(title_key="meta.title", loader=True):
 {LOADER if loader else ""}"""
 
 
-MENU_PHOTOS = ["keys-home.jpg", "signing-desk.jpg", "house-rain.jpg", "phone-morning.jpg"]
+MENU_PHOTOS = ["keys-home.jpg", "signing-desk.jpg", "house-rain.jpg", "phone-call.jpg"]
 
 
 def navbar(cur=None):
@@ -476,7 +476,7 @@ def sec_calc():
 # ---------------------------------------------------------------- five reasons, three steps, what we buy, band, FAQ
 
 def sec_why():
-    imgs = ["keys-home.jpg", "signing-desk.jpg", "house-old.jpg", "boxes-room.jpg", "fog-village.jpg"]
+    imgs = ["keys-home.jpg", "signing-desk.jpg", "house-worn.jpg", "boxes-room.jpg", "fog-village.jpg"]
     cards = chr(10).join(f"""        <article class="why-p">
           <img src="assets/img/{imgs[i - 1]}" alt="" loading="lazy">
           <span class="why-n">{i:02d}</span>
@@ -503,7 +503,7 @@ def sec_why():
 
 
 def sec_process():
-    imgs = ["phone-morning.jpg", "city-street.jpg", "signing.jpg"]
+    imgs = ["phone-call.jpg", "city-street.jpg", "signing.jpg"]
     cols = chr(10).join(f"""        <li class="how-col" style="--d:{(i - 1) * 0.18:.2f}s">
           <div class="how-num"><span>{i:02d}</span></div>
           <div class="how-photo"><img src="assets/img/{imgs[i - 1]}" alt="" loading="lazy"></div>
