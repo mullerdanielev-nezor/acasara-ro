@@ -885,3 +885,6 @@ img[src$="keys.jpg"]{object-position:50% 42%}
 .calc-know h2{line-height:1.12}
 .calc-know h2 em{display:inline-block;line-height:1.02;padding:.04em .16em .08em;margin-bottom:.12em}
 @media (max-width:860px){.tr-h2{margin-bottom:clamp(44px,12vw,64px)}}
+
+/* iOS Safari zooms into any field below 16px on focus */
+input,select,textarea{font-family:inherit;font-size:16px;line-height:1.35}
